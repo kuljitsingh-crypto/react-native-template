@@ -1,25 +1,25 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {AuthenticatedChildren} from '../components';
-import {useEffect} from 'react';
-import {useDeepLinkStatus} from '../hooks';
-import {FETCH_STATUS} from '../custom-config';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AuthenticatedChildren } from "../components";
+import { useEffect } from "react";
+import { useDeepLinkStatus } from "../hooks";
+import { FETCH_STATUS } from "../custom-config";
 import {
   ScreenConfiguration,
   ScreenParamList,
   ScreenValue,
   screenNames,
   screenValuesSet,
-} from './ScreenTypes';
-import {AppDispatchType} from '../../store';
-import {updateShouldRedirectAfterDeepLinkStatus} from '../globalReducers/deepLinkSlice';
+} from "./ScreenTypes";
+import { AppDispatchType } from "../../store";
+import { updateShouldRedirectAfterDeepLinkStatus } from "../globalReducers/deepLinkSlice";
 import {
   ScreenLoadDataKey,
   screenDataLoadingApi,
-} from './screenApi/dataLoadingApi';
-import {ResetReduxStatekey, resetReduxState} from './screenApi/dateResetApi';
+} from "./screenApi/dataLoadingApi";
+import { ResetReduxStatekey, resetReduxState } from "./screenApi/dateResetApi";
 
 const DEFAULT_REDIRECT_PATH = screenNames.home;
-
+const DEFAULT_SPLASH_TIMEOUT = 3000;
 type ScreenProps<TName extends ScreenValue> = NativeStackScreenProps<
   ScreenParamList,
   TName
@@ -33,7 +33,7 @@ const useRedirect = <TName extends ScreenValue>(
       path: any;
       params?: any;
     };
-  },
+  }
 ) => {
   const {
     isSplashScreen,
@@ -42,7 +42,7 @@ const useRedirect = <TName extends ScreenValue>(
     dispatch,
     name,
   } = screen;
-  const {params, path = DEFAULT_REDIRECT_PATH} = splashRedirectOption || {};
+  const { params, path = DEFAULT_REDIRECT_PATH } = splashRedirectOption || {};
   const {
     deepLinkStatus,
     shouldRedirectAfterDeepLink,
@@ -51,11 +51,11 @@ const useRedirect = <TName extends ScreenValue>(
   } = useDeepLinkStatus();
   const {
     navigation,
-    route: {params: pathParams},
+    route: { params: pathParams },
   } = navigationProps;
   const routeName = name as ScreenLoadDataKey;
   const loadData = (screenDataLoadingApi || {})[routeName];
-  const shouldLoadData = typeof loadData === 'function';
+  const shouldLoadData = typeof loadData === "function";
 
   const redirectCb = () => {
     dispatch(updateShouldRedirectAfterDeepLinkStatus(false));
@@ -79,7 +79,11 @@ const useRedirect = <TName extends ScreenValue>(
           .then(() => redirectCb())
           .catch(() => redirectCb());
       } else {
-        redirectCb();
+        if (isSplashScreen) {
+          setTimeout(redirectCb, DEFAULT_SPLASH_TIMEOUT);
+        } else {
+          redirectCb();
+        }
       }
     }
   }, [deepLinkStatus]);
@@ -93,12 +97,12 @@ const useRedirect = <TName extends ScreenValue>(
 
 const useResetReduxState = <TName extends ScreenValue>(
   screen: ScreenConfiguration<TName>,
-  dispatch: AppDispatchType,
+  dispatch: AppDispatchType
 ) => {
-  const {name} = screen;
+  const { name } = screen;
   const routeName = name as ResetReduxStatekey;
   const resetState = (resetReduxState || {})[routeName];
-  const shouldCallReset = typeof resetState === 'function';
+  const shouldCallReset = typeof resetState === "function";
   useEffect(() => {
     return () => {
       if (shouldCallReset) {
@@ -111,12 +115,12 @@ const useResetReduxState = <TName extends ScreenValue>(
 export function screenHoc<
   TName extends ScreenValue,
   TSplashRedirect extends ScreenValue = ScreenValue,
-  TRedirect extends ScreenValue = ScreenValue,
+  TRedirect extends ScreenValue = ScreenValue
 >(
   screenConfigurations: ScreenConfiguration<TName, TSplashRedirect, TRedirect>,
-  dispatch: AppDispatchType,
+  dispatch: AppDispatchType
 ) {
-  const {name} = screenConfigurations;
+  const { name } = screenConfigurations;
   return function InnerApp(props: ScreenProps<typeof name>) {
     const {
       component: Comp,
@@ -125,7 +129,7 @@ export function screenHoc<
       redirectOnUnauthorized,
     } = screenConfigurations;
     const navigationProps = props;
-    const {path, params} = unAuthRedirectOption || {};
+    const { path, params } = unAuthRedirectOption || {};
 
     useRedirect<typeof name>({
       ...screenConfigurations,
