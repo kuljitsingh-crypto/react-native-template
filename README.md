@@ -11,7 +11,7 @@
  ```bash
   git pull https://github.com/kuljitsingh-crypto/react-native-template.git --allow-unrelated-histories
  ```
-After that you will get merged conflict on App.tsx, index.js, .eslintrc.js and Readme.md. For App.tsx ,index.js and .eslintrc.js accept the incoming one and for readme accept current one.
+After that you will get merged conflict on App.tsx, index.js, .eslintrc.js and Readme.md. For App.tsx ,index.js and .eslintrc.js accept the incoming one (if it is new project,else make sure both changes should present) and for readme accept current one.
 
 ## Step 3:
 
