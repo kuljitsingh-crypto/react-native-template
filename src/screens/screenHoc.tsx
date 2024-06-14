@@ -16,7 +16,7 @@ import {
   ScreenLoadDataKey,
   screenDataLoadingApi,
 } from "./screenApi/dataLoadingApi";
-import { ResetReduxStatekey, resetReduxState } from "./screenApi/dateResetApi";
+import { ResetReduxStatekey, resetReduxState } from "./screenApi/dataResetApi";
 
 const DEFAULT_REDIRECT_PATH = screenNames.home;
 const DEFAULT_SPLASH_TIMEOUT = 3000;
