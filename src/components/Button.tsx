@@ -1,33 +1,33 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   GestureResponderEvent,
   Pressable,
   PressableProps,
   StyleSheet,
-} from 'react-native';
-import {colors} from '../utill';
+} from "react-native";
+import { colors } from "../utill";
 
-type InlineTextButtonProps = Omit<PressableProps, 'style'> & {
-  style?: Record<string, number | string>;
+type InlineTextButtonProps = Omit<PressableProps, "style"> & {
+  style?: Record<string, unknown>;
 };
 export const InlineTextButton = (props: InlineTextButtonProps) => {
-  const {style, children, onPressIn, onPressOut, onPress, ...rest} = props;
+  const { style, children, onPressIn, onPressOut, onPress, ...rest } = props;
   const [isPressed, setIsPressed] = useState(false);
   const handlePressIn = (e: GestureResponderEvent) => {
     setIsPressed(true);
-    if (typeof onPressIn === 'function') {
+    if (typeof onPressIn === "function") {
       onPressIn(e);
     }
   };
   const handlePressOut = (e: GestureResponderEvent) => {
     setIsPressed(false);
-    if (typeof onPressOut === 'function') {
+    if (typeof onPressOut === "function") {
       onPressOut(e);
     }
   };
   const handlePress = (e: GestureResponderEvent) => {
-    if (typeof onPress === 'function') {
+    if (typeof onPress === "function") {
       onPress(e);
     }
   };
@@ -35,7 +35,7 @@ export const InlineTextButton = (props: InlineTextButtonProps) => {
     inlineButtonStyle.button,
     ...(style ? [style] : []),
     ...(isPressed
-      ? [{opacity: 0.6, backgroundColor: colors.buttonBgTransparentColor}]
+      ? [{ opacity: 0.6, backgroundColor: colors.buttonBgTransparentColor }]
       : []),
   ];
   return (
@@ -56,8 +56,8 @@ const inlineButtonStyle = StyleSheet.create({
   },
 });
 
-type PrimaryButtonProps = Omit<PressableProps, 'style'> & {
-  style?: Record<string, number | string>;
+type PrimaryButtonProps = Omit<PressableProps, "style"> & {
+  style?: Record<string, unknown>;
   inProgress?: boolean;
 };
 export const PrimaryButton = (props: PrimaryButtonProps) => {
@@ -74,19 +74,19 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const handlePressIn = (e: GestureResponderEvent) => {
     setIsPressed(true);
-    if (typeof onPressIn === 'function') {
+    if (typeof onPressIn === "function") {
       onPressIn(e);
     }
   };
   const handlePressOut = (e: GestureResponderEvent) => {
     setIsPressed(false);
-    if (typeof onPressOut === 'function') {
+    if (typeof onPressOut === "function") {
       onPressOut(e);
     }
   };
   const handlePress = (e: GestureResponderEvent) => {
     if (disabled || inProgress) return;
-    if (typeof onPress === 'function') {
+    if (typeof onPress === "function") {
       onPress(e);
     }
   };
@@ -94,7 +94,7 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
     primaryButtonStyle.button,
     ...(style ? [style] : []),
     ...(isPressed || disabled
-      ? [{opacity: 0.6, backgroundColor: colors.buttonBgTransparentColor}]
+      ? [{ opacity: 0.6, backgroundColor: colors.buttonBgTransparentColor }]
       : []),
   ];
   return (
@@ -106,7 +106,7 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
       disabled={disabled}
       {...rest}>
       {inProgress ? (
-        <ActivityIndicator size={'large'} color={colors.white} />
+        <ActivityIndicator size={"large"} color={colors.white} />
       ) : (
         children
       )}
@@ -116,21 +116,21 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
 
 const primaryButtonStyle = StyleSheet.create({
   button: {
-    width: '100%',
+    width: "100%",
     opacity: 1,
     backgroundColor: colors.primary,
     color: colors.white,
     height: 48,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 6,
     marginVertical: 12,
   },
 });
 
-type SecondaryButtonProps = Omit<PressableProps, 'style'> & {
-  style?: Record<string, number | string>;
+type SecondaryButtonProps = Omit<PressableProps, "style"> & {
+  style?: Record<string, unknown>;
   inProgress?: boolean;
 };
 export const SecondaryButton = (props: SecondaryButtonProps) => {
@@ -147,26 +147,26 @@ export const SecondaryButton = (props: SecondaryButtonProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const handlePressIn = (e: GestureResponderEvent) => {
     setIsPressed(true);
-    if (typeof onPressIn === 'function') {
+    if (typeof onPressIn === "function") {
       onPressIn(e);
     }
   };
   const handlePressOut = (e: GestureResponderEvent) => {
     setIsPressed(false);
-    if (typeof onPressOut === 'function') {
+    if (typeof onPressOut === "function") {
       onPressOut(e);
     }
   };
   const handlePress = (e: GestureResponderEvent) => {
     if (disabled || inProgress) return;
-    if (typeof onPress === 'function') {
+    if (typeof onPress === "function") {
       onPress(e);
     }
   };
   const buttonStyle = [
     secondaryButtonStyle.button,
     ...(style ? [style] : []),
-    ...(isPressed || disabled ? [{opacity: 0.3}] : []),
+    ...(isPressed || disabled ? [{ opacity: 0.3 }] : []),
   ];
   return (
     <Pressable
@@ -177,7 +177,7 @@ export const SecondaryButton = (props: SecondaryButtonProps) => {
       disabled={disabled}
       {...rest}>
       {inProgress ? (
-        <ActivityIndicator size={'large'} color={colors.primaryDark} />
+        <ActivityIndicator size={"large"} color={colors.primaryDark} />
       ) : (
         children
       )}
@@ -187,16 +187,16 @@ export const SecondaryButton = (props: SecondaryButtonProps) => {
 
 const secondaryButtonStyle = StyleSheet.create({
   button: {
-    width: '100%',
+    width: "100%",
     opacity: 1,
     backgroundColor: colors.white,
     color: colors.white,
     borderWidth: 1,
     borderColor: colors.primaryDark,
     height: 48,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 6,
     marginVertical: 12,
   },
