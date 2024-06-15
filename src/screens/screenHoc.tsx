@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthenticatedChildren } from "../components";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useDeepLinkStatus } from "../hooks";
+import { AuthenticatedChildren } from "../components";
 import { FETCH_STATUS } from "../custom-config";
 import {
   ScreenConfiguration,
@@ -10,13 +11,17 @@ import {
   screenNames,
   screenValuesSet,
 } from "./screenTypes";
-import { AppDispatchType } from "../../store";
+import { AppDispatchType, AppSelectorType } from "../../store";
 import { updateShouldRedirectAfterDeepLinkStatus } from "../globalReducers/deepLinkSlice";
 import {
   ScreenLoadDataKey,
   screenDataLoadingApi,
 } from "./screenApi/dataLoadingApi";
 import { ResetReduxStatekey, resetReduxState } from "./screenApi/dataResetApi";
+import {
+  ConditionalRedirectKey,
+  conditionalRedirectApi,
+} from "./screenApi/conditionalRedirectApi";
 
 const DEFAULT_REDIRECT_PATH = screenNames.home;
 const DEFAULT_SPLASH_TIMEOUT = 3000;
@@ -112,6 +117,40 @@ const useResetReduxState = <TName extends ScreenValue>(
   }, []);
 };
 
+const useConditionalRedirect = <TName extends ScreenValue>(
+  screen: ScreenConfiguration<TName>,
+  navigation: ScreenProps<TName>["navigation"]
+) => {
+  const selector = useSelector;
+  const { name } = screen;
+  const routeName = name as ConditionalRedirectKey;
+  const conditionalRedirect = (conditionalRedirectApi || {})[routeName];
+  const shouldCallRedirect = typeof conditionalRedirect === "function";
+  const { redirectCondition, redirectOptions } = shouldCallRedirect
+    ? conditionalRedirect(selector, name)
+    : { redirectCondition: false, redirectOptions: null };
+
+  useEffect(() => {
+    if (
+      redirectCondition &&
+      redirectOptions !== null &&
+      redirectOptions.pathName
+    ) {
+      if (redirectOptions.isReplace) {
+        navigation.replace(
+          redirectOptions.pathName,
+          redirectOptions.pathParams as any
+        );
+      } else {
+        navigation.navigate(
+          redirectOptions.pathName,
+          redirectOptions.pathParams as any
+        );
+      }
+    }
+  }, [redirectCondition, navigation]);
+};
+
 export function screenHoc<
   TName extends ScreenValue,
   TSplashRedirect extends ScreenValue = ScreenValue,
@@ -138,7 +177,7 @@ export function screenHoc<
     });
 
     useResetReduxState(screenConfigurations, dispatch);
-
+    useConditionalRedirect(screenConfigurations, navigationProps.navigation);
     return auth ? (
       <AuthenticatedChildren
         redirectOnUnauthorized={!!redirectOnUnauthorized}

@@ -1,18 +1,18 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   posts: [],
 };
 
 const homeSlice = createSlice({
-  name: 'home',
+  name: "home",
   initialState,
   reducers: {
-    resetHomeState: state => {
+    resetHomeState: (state) => {
       state.posts = [];
     },
   },
 });
 
 export default homeSlice.reducer;
-export const {resetHomeState} = homeSlice.actions;
+export const { resetHomeState } = homeSlice.actions;

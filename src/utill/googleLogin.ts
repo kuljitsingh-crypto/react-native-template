@@ -98,11 +98,7 @@ class GoogleLogin {
       await GoogleSignin.hasPlayServices();
       const hasUserLoggedIn = await GoogleSignin.hasPlayServices();
       if (hasUserLoggedIn) {
-        const userInfo = GoogleSignin.getCurrentUser();
-        if (userInfo !== null) {
-          onSuccess(userInfo);
-          return;
-        }
+        await GoogleSignin.signOut();
       }
       const userInfo = await GoogleSignin.signIn();
       onSuccess(userInfo);
@@ -156,25 +152,29 @@ class GoogleLogin {
     }
   }
 
-  async logout(options: {
-    onError: (errOptions: GoogleLoginError) => void;
-    onSuccess: (isLogout: boolean) => void;
+  async logout(options?: {
+    onError?: (errOptions: GoogleLoginError) => void;
+    onSuccess?: (isLogout: boolean) => void;
   }) {
     if (!this.#hasGoogleClientId) {
       throw new Error(
         "GOOGLE_APP_CLIENT_ID needs to be string but found undefined."
       );
     }
-    const { onError, onSuccess } = options;
+    const { onError, onSuccess } = options || {};
     try {
       await GoogleSignin.signOut();
-      onSuccess(true);
+      if (typeof onSuccess === "function") {
+        onSuccess(true);
+      }
     } catch (error) {
-      onError({
-        errorCode: GoogleSignInError.OTHER,
-        nativeError: error,
-        ...GoogleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
-      });
+      if (typeof onError === "function") {
+        onError({
+          errorCode: GoogleSignInError.OTHER,
+          nativeError: error,
+          ...GoogleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+        });
+      }
     }
   }
 }

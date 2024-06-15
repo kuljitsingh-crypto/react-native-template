@@ -66,7 +66,6 @@ const GoogleSignInButton = (props: GoogleSignInProps) => {
       if (typeof onSuccess === "function") {
         await onSuccess(user);
       }
-      setLoginInProgress(false);
     } catch (e) {
       handleError({
         nativeError: e,
