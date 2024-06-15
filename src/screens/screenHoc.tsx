@@ -9,7 +9,7 @@ import {
   ScreenValue,
   screenNames,
   screenValuesSet,
-} from "./ScreenTypes";
+} from "./screenTypes";
 import { AppDispatchType } from "../../store";
 import { updateShouldRedirectAfterDeepLinkStatus } from "../globalReducers/deepLinkSlice";
 import {

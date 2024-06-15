@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { SimpleToastProvider } from "./src/SimpleToast";
 import { useDeepLink } from "./src/hooks";
 import { SafeAreaView } from "react-native";
+import { colors } from "./src/utill";
 
 //for permission implmentation go to  https://github.com/zoontek/react-native-permissions
 // and implment the logic for the permission and uncommnet the permision in
@@ -21,7 +22,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <DeepLinkWrapper>
-        <SimpleToastProvider>
+        <SimpleToastProvider
+          infoColor={colors.infoToast}
+          successColor={colors.successToast}
+          errorColor={colors.errorToast}>
           <AppNavigator dispatch={dispatch} />
         </SimpleToastProvider>
       </DeepLinkWrapper>

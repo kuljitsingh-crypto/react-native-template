@@ -4,7 +4,7 @@ import { colors, fonts } from "../../utill";
 import { useIntl } from "../../hooks";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { container } from "../../styles/appDefaultStyle";
-import { ScreenParamList } from "../ScreenTypes";
+import { ScreenParamList } from "../screenTypes";
 
 type SplashProps = NativeStackScreenProps<ScreenParamList, "splash">;
 

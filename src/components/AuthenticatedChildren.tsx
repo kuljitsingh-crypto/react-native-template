@@ -1,19 +1,19 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
-import {useSelector} from 'react-redux';
-import {selectIsAuthenticated} from '../globalReducers/userSlice';
-import {FormatedMessage} from './translation';
-import {PrimaryButton} from './Button';
-import {useNavigation} from '@react-navigation/native';
-import {container, headerText} from '../styles/appDefaultStyle';
-import {useIntl} from '../hooks';
-import {colors, fonts} from '../utill';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../globalReducers/userSlice";
+import { FormatedMessage } from "./translation";
+import { PrimaryButton } from "./Button";
+import { useNavigation } from "@react-navigation/native";
+import { container, headerText } from "../styles/appDefaultStyle";
+import { useIntl } from "../hooks";
+import { colors, fonts } from "../utill";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   ScreenParamList,
   ScreenValue,
   screenNames,
-} from '../screens/ScreenTypes';
+} from "../screens/screenTypes";
 
 type AuthenticatedChildrenProps = {
   children: React.ReactNode;
@@ -67,15 +67,15 @@ const AuthenticatedChildren = (props: AuthenticatedChildrenProps) => {
         <View>
           <Text style={headerStyle}>
             {unAuthHeaderMessage ||
-              intl.formatMessage('AuthenticatedChildren.title')}
+              intl.formatMessage("AuthenticatedChildren.title")}
           </Text>
           <Text style={descStyle}>
             {unAuthDescriptionMessage ||
-              intl.formatMessage('AuthenticatedChildren.desc')}
+              intl.formatMessage("AuthenticatedChildren.desc")}
           </Text>
           <PrimaryButton style={styles.button} onPress={handlePress}>
             <FormatedMessage
-              id="AuthenticatedChildren.loginText"
+              id='AuthenticatedChildren.loginText'
               style={styles.btnText}
             />
           </PrimaryButton>

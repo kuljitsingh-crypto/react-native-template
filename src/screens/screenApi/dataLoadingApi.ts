@@ -1,5 +1,5 @@
-import {screenNames} from '../ScreenTypes';
-import {loadData as splashLoadData} from '../Splash/splashSlice';
+import { screenNames } from "../screenTypes";
+import { loadData as splashLoadData } from "../Splash/splashSlice";
 
 export const screenDataLoadingApi = {
   [screenNames.splash]: splashLoadData,
