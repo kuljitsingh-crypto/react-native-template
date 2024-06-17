@@ -19,41 +19,16 @@ const defaultLoginError = {
 };
 type GoogleSignInProps = {
   loginText: string;
-  buttonStyle?: Record<string, unknown>;
-  buttonTextStyle?: Record<string, unknown>;
-  iconStyle?: Record<string, unknown>;
-  iconColor?: string;
-  GoogleIcon?: (props: {
-    style?: Record<string, unknown>;
-    color: string;
-  }) => React.JSX.Element;
   onError?: (errOptions: GoogleLoginError) => void;
   onSuccess: (user: GoogleLoginUser) => Promise<void>;
 };
 
 const GoogleSignInButton = (props: GoogleSignInProps) => {
-  const {
-    loginText,
-    iconStyle,
-    buttonTextStyle,
-    buttonStyle,
-    iconColor = colors.black,
-    GoogleIcon,
-    onError,
-    onSuccess,
-  } = props;
+  const { loginText, onError, onSuccess } = props;
   const toast = useToast();
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const iconStyleMaybe = !!iconStyle ? { style: iconStyle } : {};
-
-  const buttonTextStyleMaybe = !!buttonTextStyle
-    ? { style: buttonTextStyle }
-    : { style: styles.socialBtnText };
-
-  const buttonStyleMaybe = !!buttonStyle
-    ? { style: buttonStyle }
-    : { style: styles.socialBtn };
-
+  const buttonTextStyleMaybe = { style: styles.socialBtnText };
+  const buttonStyleMaybe = { style: styles.socialBtn };
   const handleError = (options: GoogleLoginError) => {
     setLoginInProgress(false);
     toast.show({ title: options.title, desc: options.message, type: "error" });
@@ -89,11 +64,7 @@ const GoogleSignInButton = (props: GoogleSignInProps) => {
       {...buttonStyleMaybe}
       onPress={signIn}
       inProgress={loginInProgress}>
-      {GoogleIcon ? (
-        <GoogleIcon {...iconStyleMaybe} color={iconColor} />
-      ) : (
-        <Icon name='google' iconType='ant' color={iconColor} />
-      )}
+      <Icon name='google' iconType='ant' color={colors.primaryDark} />
       <Text {...buttonTextStyleMaybe}>{loginText}</Text>
     </SecondaryButton>
   ) : (

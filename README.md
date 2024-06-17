@@ -100,6 +100,9 @@ setup_permissions([
   # 'StoreKit',
 ]) 
 ``` 
+For `Google Login`, please refer to
+https://react-native-google-signin.github.io/docs/setting-up/ios 
+
 
 ### Step For Android:
 
@@ -196,14 +199,14 @@ import android.os.Bundle;
 
 #### npm
  ```bash
- npm i @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-config react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin
+ npm i @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-config react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin  react-native-fbsdk-next
  ```
 ```bash
 npm i @types/react-native-vector-icons @types/react-redux --save-dev
 ```
 #### yarn
   ```bash
- yarn add @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-config react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin
+ yarn add @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-config react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin  react-native-fbsdk-next
  ```
  ```bash
  yarn add -D @types/react-native-vector-icons @types/react-redux 

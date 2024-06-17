@@ -87,13 +87,17 @@ class GoogleLogin {
   async login(options: {
     onError: (errOptions: GoogleLoginError) => void;
     onSuccess: (user: GoogleLoginUser) => void;
+    throwErrorOnNoId?: boolean;
   }) {
+    const { onError, onSuccess, throwErrorOnNoId } = options;
     if (!this.#hasGoogleClientId) {
-      throw new Error(
-        "GOOGLE_APP_CLIENT_ID needs to be string but found undefined."
-      );
+      if (throwErrorOnNoId) {
+        throw new Error(
+          "GOOGLE_APP_CLIENT_ID needs to be string but found undefined."
+        );
+      }
+      return;
     }
-    const { onError, onSuccess } = options;
     try {
       await GoogleSignin.hasPlayServices();
       const hasUserLoggedIn = await GoogleSignin.hasPlayServices();
@@ -155,13 +159,17 @@ class GoogleLogin {
   async logout(options?: {
     onError?: (errOptions: GoogleLoginError) => void;
     onSuccess?: (isLogout: boolean) => void;
+    throwErrorOnNoId?: boolean;
   }) {
+    const { onError, onSuccess, throwErrorOnNoId } = options || {};
     if (!this.#hasGoogleClientId) {
-      throw new Error(
-        "GOOGLE_APP_CLIENT_ID needs to be string but found undefined."
-      );
+      if (throwErrorOnNoId) {
+        throw new Error(
+          "GOOGLE_APP_CLIENT_ID needs to be string but found undefined."
+        );
+      }
+      return;
     }
-    const { onError, onSuccess } = options || {};
     try {
       await GoogleSignin.signOut();
       if (typeof onSuccess === "function") {
