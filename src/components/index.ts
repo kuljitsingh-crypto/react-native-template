@@ -8,3 +8,4 @@ export {
 export { default as AuthenticatedChildren } from "./AuthenticatedChildren";
 export { default as ErrorView } from "./ErrorView";
 export { default as GoogleSignInButton } from "./GoogleSignInButton";
+export { default as FacebookSignInButton } from "./FacebookSignInButton";

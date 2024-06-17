@@ -7,3 +7,4 @@ export { createCustomAsyncThunk } from "./thunkHelper";
 export { apiBaseUrl } from "./api";
 export * from "./urlHelper";
 export * from "./googleLogin";
+export * from "./facebookLogin";

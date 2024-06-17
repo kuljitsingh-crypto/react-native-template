@@ -11,7 +11,7 @@
  ```bash
   git pull https://github.com/kuljitsingh-crypto/react-native-template.git --allow-unrelated-histories
  ```
-After that you will get merged conflict on App.tsx, index.js, .eslintrc.js and Readme.md. For App.tsx ,index.js and .eslintrc.js accept the incoming one (if it is new project,else make sure both changes should present) and for readme accept current one.
+After that you will get merged conflict on `App.tsx`, `index.js`, `.eslintrc.js` and `Readme.md`. For `App.tsx` ,`index.js` and `.eslintrc.js` accept the incoming one (if it is new project,else make sure both changes should present) and for `readme` accept current one.
 
 ## Step 3:
 
@@ -100,8 +100,116 @@ setup_permissions([
   # 'StoreKit',
 ]) 
 ``` 
-For `Google Login`, please refer to
-https://react-native-google-signin.github.io/docs/setting-up/ios 
+#### Google Sign in
+
+* Step 1:  update the info.plist
+create a new CFBundleURLTypes and  CFBundleURLSchemes if not exist or add new string values IOS_REVERSED_CLIENT_ID ,if exists
+```bash
+  <key>CFBundleURLTypes</key>
+    <array>
+    <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>IOS_REVERSED_CLIENT_ID </string>
+    </array>
+    </dict>
+  </array> 
+```
+* Step 2:
+1. Open `AppDelegate.m`
+2. Add an import: #import <GoogleSignIn/GoogleSignIn.h>
+3. Add a method to respond to the URL scheme. This is just an example of a method that you can add at the bottom of your file if you're using both FBSDKApplicationDelegate and GIDSignIn :
+
+``` bash
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+   if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
+    return YES;
+  }
+
+  if ([GIDSignIn.sharedInstance handleURL:url]) {
+    return YES;
+  }
+
+  return NO;
+}
+```
+For more information on `Google Login` visit https://react-native-google-signin.github.io/docs/install
+
+#### Facebook Login
+
+* Step 1: Update Info.plist
+create a new CFBundleURLTypes and  CFBundleURLSchemes if not exist or add new string values fbAPP-ID ,if exists
+```bash
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>fbAPP-ID</string>
+    </array>
+    </dict>
+  </array>
+  <key>FacebookAppID</key>
+  <string>APP-ID</string>
+  <key>FacebookClientToken</key>
+  <string>CLIENT-TOKEN</string>
+  <key>FacebookDisplayName</key>
+  <string>APP-NAME</string> 
+```
+
+* Step 2: 
+1. Add following code in `ios/ProjectName/AppDelegate.m`
+```bash
+import <AuthenticationServices/AuthenticationServices.h>
+import <SafariServices/SafariServices.h>
+import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
+```
+2. Inside `didFinishLaunchingWithOptions` in `ios/ProjectName/AppDelegate.m`, add the following:
+```bash
+   [[FBSDKApplicationDelegate sharedInstance] application:application
+                       didFinishLaunchingWithOptions:launchOptions];
+```
+3. After this step, if you run into this `build` issue: `Undefined symbols for architecture x86_64:`, then you need to create a new file `File.swift` on your project folder. After doing this, you will get a prompt from `Xcode` asking if you would like to create a `Bridging Header`. Click accept.
+
+4. add code in `ios/ProjectName/AppDelegate.m`
+```bash
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [[FBSDKApplicationDelegate sharedInstance]application:app
+                                                      openURL:url
+                                                      options:options];
+}
+```
+
+**Note:** The `AppDelegate.m` file can only have one method for openUrl. If you're also using `RCTLinkingManager` to handle deep links, you should handle both results in your openUrl method.
+
+``` bash
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+   if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
+    return YES;
+  }
+
+  if ([GIDSignIn.sharedInstance handleURL:url]) {
+    return YES;
+  }
+
+  if ([RCTLinkingManager application:app openURL:url options:options]) {
+    return YES;
+  }
+
+  return NO;
+}
+```
+
+For more information on `Facebook Login` https://github.com/thebergamo/react-native-fbsdk-next
 
 
 ### Step For Android:
@@ -190,6 +298,60 @@ and make sure to add the following import statement at the top of this file belo
 import android.os.Bundle; 
 ```
 
+#### Google Login
+
+**Without Firebase** 
+You don't need to do any more modifications.
+
+**With Firebase**
+visit https://react-native-google-signin.github.io/docs/setting-up/android
+
+For more information on `Google Login` visit https://react-native-google-signin.github.io/docs/install
+
+
+#### Facebook Login
+
+* Step 1: Add following string values to ` /app/res/values/strings.xml`
+```bash
+<string name="facebook_app_id">APP-ID</string>
+<string name="facebook_client_token">CLIENT-TOKEN</string>
+```
+
+* Step 2: Add following meta data elements to `/app/manifests/AndroidManifest.xml`
+
+```bash
+<application android:label="@string/app_name" ...>
+    ...
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+    <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+    ...
+</application>
+```
+* Step3: Add a `uses-permission` element to the `manifest` after the application element:
+
+```bash
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+* Step4: In addition, keep in mind that you have to point the Key Hash generation command at your app's `debug.keystore` file.
+
+TO generate your `Key Hash`
+
+```bash
+#On OS X, run:
+keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore | openssl sha1 -binary | openssl base64
+#On Windows:
+keytool -exportcert -alias androiddebugkey -keystore %HOMEPATH%\.android\debug.keystore | openssl sha1 -binary | openssl base64
+```
+OR you can generate using 
+```bash
+$ cd android/ && ./gradlew signingReport
+# Copy Sha1 Hex Code and convert it to base64 (using online tool,etc.,) and paste it into facebook
+```
+
+For more information on `Facebook Login` https://github.com/thebergamo/react-native-fbsdk-next
+
+
 ## Step 4
  Run Follwing from  terminal
  ```bash
@@ -211,6 +373,10 @@ npm i @types/react-native-vector-icons @types/react-redux --save-dev
  ```bash
  yarn add -D @types/react-native-vector-icons @types/react-redux 
  ```
+**Note:** For iOS using cocoapods, run:
+```bash
+ cd ios/ && pod install
+```
 
 ## Step 5
 Run Following command in your terminal

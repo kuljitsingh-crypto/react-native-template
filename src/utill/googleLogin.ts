@@ -25,7 +25,7 @@ export type GoogleLoginError = {
   nativeError: any;
 };
 
-const GoogleSignInErrorTitleAndMessage = {
+const googleSignInErrorTitleAndMessage = {
   [GoogleSignInError.SIGN_IN_CANCELLED]: {
     title: "Google Sign-In Cancelled",
     message: "You have cancelled the sign-in process.",
@@ -45,7 +45,7 @@ const GoogleSignInErrorTitleAndMessage = {
     message: "You need to sign in with your Google account to proceed.",
   },
   [GoogleSignInError.OTHER]: {
-    title: "Google Sign-In/Sign-Out Error",
+    title: "Google Sign-In/Sign-Out Failed",
     message:
       "An unknown error occurred during the Google sign-in/sign-out process. Please try again later.",
   },
@@ -113,7 +113,7 @@ class GoogleLogin {
             onError({
               errorCode: GoogleSignInError.SIGN_IN_CANCELLED,
               nativeError: error,
-              ...GoogleSignInErrorTitleAndMessage[
+              ...googleSignInErrorTitleAndMessage[
                 GoogleSignInError.SIGN_IN_CANCELLED
               ],
             });
@@ -123,7 +123,7 @@ class GoogleLogin {
             onError({
               errorCode: GoogleSignInError.IN_PROGRESS,
               nativeError: error,
-              ...GoogleSignInErrorTitleAndMessage[
+              ...googleSignInErrorTitleAndMessage[
                 GoogleSignInError.IN_PROGRESS
               ],
             });
@@ -133,7 +133,7 @@ class GoogleLogin {
             onError({
               errorCode: GoogleSignInError.PLAY_SERVICES_NOT_AVAILABLE,
               nativeError: error,
-              ...GoogleSignInErrorTitleAndMessage[
+              ...googleSignInErrorTitleAndMessage[
                 GoogleSignInError.PLAY_SERVICES_NOT_AVAILABLE
               ],
             });
@@ -143,14 +143,14 @@ class GoogleLogin {
             onError({
               errorCode: GoogleSignInError.OTHER,
               nativeError: error,
-              ...GoogleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+              ...googleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
             });
         }
       } else {
         onError({
           errorCode: GoogleSignInError.OTHER,
           nativeError: error,
-          ...GoogleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+          ...googleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
         });
       }
     }
@@ -180,7 +180,7 @@ class GoogleLogin {
         onError({
           errorCode: GoogleSignInError.OTHER,
           nativeError: error,
-          ...GoogleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+          ...googleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
         });
       }
     }
