@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { SecondaryButton } from "./Button";
 import Icon from "./Icon";
 import {
-  colors,
   GoogleLoginError,
   GoogleLoginUser,
   googleLogin,
   GoogleSignInError,
 } from "../utill";
 import { normalFont } from "../styles/appDefaultStyle";
-import { useToast } from "../SimpleToast";
+import { useToast } from "./SimpleToast";
+import { FormatedMessage } from "./translation";
+import { colors } from "../constants";
 
 const defaultLoginError = {
   title: "Google Sign-In/Sign-Out Error",
@@ -68,10 +69,10 @@ const GoogleSignInButton = (props: GoogleSignInProps) => {
       <Text {...buttonTextStyleMaybe}>{loginText}</Text>
     </SecondaryButton>
   ) : (
-    <Text style={styles.inActiveGoogleSignIn}>
-      To Enable Google Sign in . Add GOOGLE_APP_CLIENT_ID in your .env and build
-      your app once again.
-    </Text>
+    <FormatedMessage
+      id='InvalidGoogleLoginId'
+      style={styles.inActiveGoogleSignIn}
+    />
   );
 };
 

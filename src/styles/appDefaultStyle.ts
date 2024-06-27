@@ -1,6 +1,6 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
-import {fonts, colors} from '../utill';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { fonts, colors } from "../constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   normalFont: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: fonts.regluar,
   },
 });
 

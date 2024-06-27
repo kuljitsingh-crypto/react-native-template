@@ -1,4 +1,4 @@
-{"Home.greeting":"Salut",
+{"Home.greeting":"Salut,{{name}}!",
 "Home.goToProfile":"Aller au profil",
 "Splash.title":"Éclaboussure",
 "AuthenticatedChildren.loginText":"Se connecter",

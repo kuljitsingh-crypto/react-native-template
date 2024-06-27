@@ -4,27 +4,32 @@ import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../globalReducers/userSlice";
 import { FormatedMessage } from "./translation";
 import { PrimaryButton } from "./Button";
-import { useNavigation } from "@react-navigation/native";
 import { container, headerText } from "../styles/appDefaultStyle";
-import { useIntl } from "../hooks";
-import { colors, fonts } from "../utill";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useIntl, useScreenNavigation } from "../hooks";
+import { colors, fonts } from "../constants";
 import {
+  ScreenParamKey,
   ScreenParamList,
+  ScreenRouteType,
   ScreenValue,
   screenNames,
-} from "../screens/screenTypes";
+} from "../screens/screenNames";
+import NamedRedirect from "./NamedRedirect";
 
-type AuthenticatedChildrenProps = {
+type AuthenticatedChildrenProps<Tname extends ScreenParamKey> = {
   children: React.ReactNode;
   unAuthHeaderMessage?: string;
   unAuthHeaderStyle?: Record<string, string | number>;
   unAuthDescriptionMessage?: string;
   unAuthDescriptionStyle?: Record<string, string | number>;
+} & {
   redirectOnUnauthorized?: boolean;
-  redirectTo?: ScreenValue;
+  redirectOptions?: ScreenRouteType<Tname>;
 };
-const AuthenticatedChildren = (props: AuthenticatedChildrenProps) => {
+
+const AuthenticatedChildren = <Tname extends ScreenParamKey>(
+  props: AuthenticatedChildrenProps<Tname>
+) => {
   const {
     children,
     unAuthHeaderMessage,
@@ -32,12 +37,10 @@ const AuthenticatedChildren = (props: AuthenticatedChildrenProps) => {
     unAuthHeaderStyle,
     unAuthDescriptionStyle,
     redirectOnUnauthorized,
-    redirectTo,
+    redirectOptions,
   } = props;
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const navigation = useNavigation<
-    NativeStackScreenProps<ScreenParamList>
-  >() as any;
+  const navigation = useScreenNavigation();
   const intl = useIntl();
   const headerStyle = [
     headerText,
@@ -52,14 +55,15 @@ const AuthenticatedChildren = (props: AuthenticatedChildrenProps) => {
     navigation.navigate(screenNames.login as never);
   };
 
-  useEffect(() => {
-    if (redirectOnUnauthorized) {
-      const redirectPathName = redirectTo || screenNames.login;
-      navigation.replace(redirectPathName as never, {} as never);
-    }
-  }, []);
+  const { name = screenNames.login, params } = redirectOptions || {};
 
-  return redirectOnUnauthorized ? null : (
+  return redirectOnUnauthorized ? (
+    <NamedRedirect
+      name={name as Tname}
+      params={params as ScreenParamList[Tname]}
+      replace={true}
+    />
+  ) : (
     <SafeAreaView style={styles.container}>
       {isAuthenticated ? (
         children

@@ -1,8 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {FormatedMessage} from './translation';
-import {colors} from '../utill';
-import {normalFont} from '../styles/appDefaultStyle';
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { FormatedMessage } from "./translation";
+import { colors } from "../constants";
+import { normalFont } from "../styles/appDefaultStyle";
 
 type ErrorViewProps = {
   id?: string;
@@ -22,8 +22,8 @@ const ErrorView = (props: ErrorViewProps) => {
     children,
   } = props;
   const hasValue =
-    (id && typeof id === 'string') ||
-    (text && typeof text === 'string') ||
+    (id && typeof id === "string") ||
+    (text && typeof text === "string") ||
     children;
   if (!hasValue) return null;
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     color: colors.matterColorErrorText,
   },
   view: {
-    width: '100%',
+    width: "100%",
     paddingVertical: 12,
     color: colors.matterColorErrorText,
   },

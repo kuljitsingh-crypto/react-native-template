@@ -11,4 +11,5 @@ export const colors = {
   infoToast: "#0d6efd",
   successToast: "#059862",
   errorToast: "#dc3545",
+  linkText: "darkblue",
 };

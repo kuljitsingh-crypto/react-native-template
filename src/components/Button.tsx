@@ -6,7 +6,7 @@ import {
   PressableProps,
   StyleSheet,
 } from "react-native";
-import { colors } from "../utill";
+import { colors } from "../constants";
 
 type InlineTextButtonProps = Omit<PressableProps, "style"> & {
   style?: Record<string, unknown>;

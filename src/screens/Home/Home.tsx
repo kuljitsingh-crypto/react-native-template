@@ -1,19 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { container } from "../../styles/appDefaultStyle";
+import { container, normalFont } from "../../styles/appDefaultStyle";
 import { FormatedMessage, PrimaryButton } from "../../components";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ScreenParamList, screenNames } from "../screenTypes";
+import { screenNames } from "../screenNames";
+import { ScreenNavigation } from "../../hooks";
 
-type HomeProps = NativeStackScreenProps<ScreenParamList, "home">;
+type HomeProps = ScreenNavigation<"home">;
 const Home = (props: HomeProps) => {
   const { navigation } = props;
   const goToProfile = () => {
-    navigation.navigate(screenNames.profile);
+    navigation.navigate(screenNames.profile, { username: "abc" });
   };
   return (
     <View style={container}>
-      <FormatedMessage id='Home.greeting' />
+      <FormatedMessage
+        id='Home.greeting'
+        values={{ name: "abc" }}
+        style={normalFont}
+      />
       <PrimaryButton onPress={goToProfile}>
         <FormatedMessage id='Home.goToProfile' />
       </PrimaryButton>

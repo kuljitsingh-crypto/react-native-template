@@ -1,18 +1,19 @@
 import { Image, SafeAreaView, StyleSheet, Text } from "react-native";
-import React, { useEffect } from "react";
-import { colors, fonts } from "../../utill";
-import { useIntl } from "../../hooks";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import React from "react";
+import { colors, fonts } from "../../constants";
+import { ScreenNavigation, useIntl } from "../../hooks";
 import { container } from "../../styles/appDefaultStyle";
-import { ScreenParamList } from "../screenTypes";
 
-type SplashProps = NativeStackScreenProps<ScreenParamList, "splash">;
+const SplashIcon = require("../../../assets/image/splash.png");
+
+type SplashProps = ScreenNavigation<"splash">;
 
 const Splash = (props: SplashProps) => {
   const { navigation } = props;
   const intl = useIntl();
   return (
     <SafeAreaView style={styles.container}>
+      <Image source={SplashIcon} style={styles.img} />
       <Text style={styles.title}>{intl.formatMessage("Splash.title")}</Text>
     </SafeAreaView>
   );
@@ -27,8 +28,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   img: {
-    width: 128,
-    height: 128,
+    width: 96,
+    height: 96,
   },
   title: {
     color: colors.primary,

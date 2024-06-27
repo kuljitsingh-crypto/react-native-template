@@ -11,7 +11,7 @@ import {
   ScreenParamType,
   ScreenValue,
   screenNames,
-} from "../screens/screenTypes";
+} from "../screens/screenNames";
 
 const PROCESS_DEEP_LINK = "app/PROCESS_DEEP_LINK";
 

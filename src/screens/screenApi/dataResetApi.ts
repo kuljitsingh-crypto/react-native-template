@@ -1,5 +1,5 @@
 import { resetHomeState } from "../Home/homeSlice";
-import { screenNames } from "../screenTypes";
+import { screenNames } from "../screenNames";
 
 export const resetReduxState = {
   [screenNames.home]: resetHomeState,

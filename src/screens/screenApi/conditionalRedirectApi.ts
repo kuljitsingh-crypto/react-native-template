@@ -1,19 +1,21 @@
 import { AppSelectorType } from "../../../store";
 import { redirectOnLogoutSuccess } from "../Profile/profileSlice";
-import { ScreenParamList, ScreenValue, screenNames } from "../screenTypes";
+import { ScreenParamList, ScreenValue, screenNames } from "../screenNames";
+
+type ConditionalRedirectFunc = (
+  selector: AppSelectorType,
+  routeName?: ScreenValue
+) => {
+  redirectCondition: boolean;
+  redirectOptions: {
+    pathName: ScreenValue;
+    pathParams?: ScreenParamList;
+    isReplace?: boolean;
+  } | null;
+};
 
 export const conditionalRedirectApi: {
-  [name: string]: (
-    selector: AppSelectorType,
-    routeName?: ScreenValue
-  ) => {
-    redirectCondition: boolean;
-    redirectOptions: {
-      pathName: ScreenValue;
-      pathParams?: ScreenParamList;
-      isReplace?: boolean;
-    } | null;
-  };
+  [name: string]: ConditionalRedirectFunc;
 } = {
   [screenNames.profile]: redirectOnLogoutSuccess,
 };

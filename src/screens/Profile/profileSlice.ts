@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppSelectorType, RootStateType } from "../../../store";
 import { FETCH_STATUS, FetchStatusValues } from "../../custom-config";
-import { ScreenValue, screenNames } from "../screenTypes";
+import { ScreenValue, screenNames } from "../screenNames";
 
 type ProfileState = {
   logoutStatus: FetchStatusValues;

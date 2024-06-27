@@ -2,10 +2,10 @@ import React from "react";
 import AppNavigator from "./AppNavigator";
 import { createStore } from "./store";
 import { Provider } from "react-redux";
-import { SimpleToastProvider } from "./src/SimpleToast";
-import { useDeepLink } from "./src/hooks";
+import { SimpleToastProvider } from "./src/components";
+import { useDeepLink } from "./src/deepLink";
 import { SafeAreaView } from "react-native";
-import { colors } from "./src/utill";
+import { colors } from "./src/constants";
 
 //for permission implmentation go to  https://github.com/zoontek/react-native-permissions
 // and implment the logic for the permission and uncommnet the permision in

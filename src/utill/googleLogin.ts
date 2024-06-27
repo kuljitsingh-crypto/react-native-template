@@ -4,7 +4,6 @@ import {
   isErrorWithCode,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { config } from "./config";
 
 export const GoogleSignInError = {
   SIGN_IN_CANCELLED: "SIGN_IN_CANCELLED",
@@ -53,7 +52,7 @@ const googleSignInErrorTitleAndMessage = {
 
 class GoogleLogin {
   static #instance: GoogleLogin | null = null;
-  static #googleClientId = config.GOOGLE_APP_CLIENT_ID;
+  static #googleClientId = process.env.GOOGLE_APP_CLIENT_ID;
   #hasGoogleClientId = !!(
     GoogleLogin.#googleClientId &&
     typeof GoogleLogin.#googleClientId === "string"

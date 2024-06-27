@@ -1,35 +1,34 @@
-import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
-import {config} from './config';
+import { LoginManager, AccessToken, Settings } from "react-native-fbsdk-next";
 
-const PERMISSIONS = ['public_profile', 'email'];
-const facebookId = config.FACEBOOK_CLIENT_ID;
+const PERMISSIONS = ["public_profile", "email"];
+const facebookId = process.env.FACEBOOK_CLIENT_ID;
 
 export const FacebookSignInError = {
-  SIGN_IN_CANCELLED: 'SIGN_IN_CANCELLED',
-  IN_PROGRESS: 'IN_PROGRESS',
-  PERMISSIONS_DECLINED: 'PERMISSIONS_DECLINED',
-  OTHER: 'OTHER',
+  SIGN_IN_CANCELLED: "SIGN_IN_CANCELLED",
+  IN_PROGRESS: "IN_PROGRESS",
+  PERMISSIONS_DECLINED: "PERMISSIONS_DECLINED",
+  OTHER: "OTHER",
 } as const;
 
 const facebookSignInErrorTitleAndMessage = {
   [FacebookSignInError.SIGN_IN_CANCELLED]: {
-    title: 'Facebook Sign-In Cancelled',
-    message: 'You have canceled the sign-in process.',
+    title: "Facebook Sign-In Cancelled",
+    message: "You have canceled the sign-in process.",
   },
   [FacebookSignInError.IN_PROGRESS]: {
-    title: 'Facebook Sign-In In Progress',
+    title: "Facebook Sign-In In Progress",
     message:
-      'The sign-in process with your Facebook account is currently ongoing. Please wait before trying again.',
+      "The sign-in process with your Facebook account is currently ongoing. Please wait before trying again.",
   },
   [FacebookSignInError.PERMISSIONS_DECLINED]: {
-    title: 'Facebook Sign-In Permission Declined',
+    title: "Facebook Sign-In Permission Declined",
     message:
-      'Some permissions required for the sign-in process were declined. Please accept all permissions to proceed.',
+      "Some permissions required for the sign-in process were declined. Please accept all permissions to proceed.",
   },
   [FacebookSignInError.OTHER]: {
-    title: 'Facebook Sign-In/Sign-Out Failed',
+    title: "Facebook Sign-In/Sign-Out Failed",
     message:
-      'An unknown error occurred during the Facebook sign-in or sign-out process. Please try again later.',
+      "An unknown error occurred during the Facebook sign-in or sign-out process. Please try again later.",
   },
 };
 
@@ -49,7 +48,7 @@ class FacebookLogin {
   static #facebokAppId = facebookId;
   #hasFacebookId =
     !!FacebookLogin.#facebokAppId &&
-    typeof FacebookLogin.#facebokAppId === 'string';
+    typeof FacebookLogin.#facebokAppId === "string";
   constructor() {
     if (FacebookLogin.#instance === null) {
       FacebookLogin.#instance = this;
@@ -73,18 +72,18 @@ class FacebookLogin {
     onSuccess: (accessToken: FacebookLoginAccesToken) => void;
     throwErrorOnNoId?: boolean;
   }) {
-    const {onError, onSuccess, throwErrorOnNoId} = options;
+    const { onError, onSuccess, throwErrorOnNoId } = options;
     if (!this.#hasFacebookId) {
       if (throwErrorOnNoId) {
         throw new Error(
-          'FACEBOOK_CLIENT_ID needs to be string but found undefined.',
+          "FACEBOOK_CLIENT_ID needs to be string but found undefined."
         );
       }
       return;
     }
     try {
       const logInResponse = await LoginManager.logInWithPermissions(
-        PERMISSIONS,
+        PERMISSIONS
       );
       if (logInResponse.isCancelled) {
         onError({
@@ -137,22 +136,22 @@ class FacebookLogin {
     onSuccess?: (isLogout: boolean) => void;
     throwErrorOnNoId?: boolean;
   }) {
-    const {onError, onSuccess, throwErrorOnNoId} = options || {};
+    const { onError, onSuccess, throwErrorOnNoId } = options || {};
     if (!this.#hasFacebookId) {
       if (throwErrorOnNoId) {
         throw new Error(
-          'FACEBOOK_CLIENT_ID needs to be string but found undefined.',
+          "FACEBOOK_CLIENT_ID needs to be string but found undefined."
         );
       }
       return;
     }
     try {
       await LoginManager.logOut();
-      if (typeof onSuccess === 'function') {
+      if (typeof onSuccess === "function") {
         onSuccess(true);
       }
     } catch (error) {
-      if (typeof onError === 'function') {
+      if (typeof onError === "function") {
         onError({
           errorCode: FacebookSignInError.OTHER,
           nativeError: error,

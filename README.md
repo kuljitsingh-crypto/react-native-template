@@ -7,6 +7,23 @@
   npx @react-native-community/cli@latest init ProjectName
  ```
 
+ Update your `babel.config.js` to use environment variables in your project
+ ```bash
+ api.cache(false)
+ module.exports = {
+  ....
+  plugins: [
+    ...,
+     ["module:react-native-dotenv", {
+      "safe": true,
+      allowUndefined: false,
+    }]
+  ]
+  ...
+ };
+ ```
+ For more go to [react-native-dotenv](https://github.com/goatandsheep/react-native-dotenv)
+
 ## Step 2: 
  ```bash
   git pull https://github.com/kuljitsingh-crypto/react-native-template.git --allow-unrelated-histories
@@ -361,17 +378,17 @@ For more information on `Facebook Login` https://github.com/thebergamo/react-nat
 
 #### npm
  ```bash
- npm i @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-config react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin  react-native-fbsdk-next
+ npm i @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin react-native-fbsdk-next
  ```
 ```bash
-npm i @types/react-native-vector-icons @types/react-redux --save-dev
+npm i @types/react-native-vector-icons @types/react-redux react-native-dotenv --save-dev
 ```
 #### yarn
   ```bash
- yarn add @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-config react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin  react-native-fbsdk-next
+ yarn add @react-native-cookies/cookies @react-navigation/native @react-navigation/native-stack @reduxjs/toolkit i18next native-form react-i18next react-native-encrypted-storage react-native-permissions react-native-safe-area-context react-native-screens react-native-svg react-native-url-polyfill react-native-vector-icons react-redux @react-native-google-signin/google-signin react-native-fbsdk-next
  ```
  ```bash
- yarn add -D @types/react-native-vector-icons @types/react-redux 
+ yarn add -D @types/react-native-vector-icons @types/react-redux react-native-dotenv
  ```
 **Note:** For iOS using cocoapods, run:
 ```bash
