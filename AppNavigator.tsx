@@ -1,9 +1,9 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { screenConfigurations } from "./src/screens/screenHelper";
-import { screenHoc } from "./src/screens";
-import { ScreenParamList } from "./src/screens/screenTypes";
+import { screenConfigurations } from "./src/screens/screenConfiguration";
+import { screenHoc } from "./src/screens/screenHoc";
+import { ScreenParamList } from "./src/screens/screenNames";
 import { AppDispatchType } from "./store";
 
 const Stack = createNativeStackNavigator<ScreenParamList>();
