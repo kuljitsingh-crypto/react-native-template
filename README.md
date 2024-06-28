@@ -120,7 +120,10 @@ setup_permissions([
 #### Google Sign in
 
 * Step 1:  update the info.plist
-create a new CFBundleURLTypes and  CFBundleURLSchemes if not exist or add new string values IOS_REVERSED_CLIENT_ID ,if exists
+create a new `CFBundleURLTypes` and  `CFBundleURLSchemes` if not exist or add new string values `IOS_REVERSED_CLIENT_ID` ,if exists
+
+To obtain IOS_REVERSED_CLIENT_ID, go to the Google Cloud Console and copy the `"iOS URL scheme"` from your iOS client in the "OAuth 2.0 Client IDs" section or you can download the client id in  json and copy the `IOS_REVERSED_CLIENT_ID` from josn file
+
 ```bash
   <key>CFBundleURLTypes</key>
     <array>
@@ -159,6 +162,7 @@ For more information on `Google Login` visit https://react-native-google-signin.
 
 * Step 1: Update Info.plist
 create a new CFBundleURLTypes and  CFBundleURLSchemes if not exist or add new string values fbAPP-ID ,if exists
+
 ```bash
   <key>CFBundleURLTypes</key>
   <array>
