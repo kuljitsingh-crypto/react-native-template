@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>en</string>
+		<key>CFBundleDisplayName</key>
+		<string>ReactNativeTemplate</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>$(PRODUCT_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(MARKETING_VERSION)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true />
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<false />
+			<key>NSAllowsLocalNetworking</key>
+			<true />
+		</dict>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string />
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIRequiredDeviceCapabilities</key>
+		<array>
+			<string>arm64</string>
+		</array>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false />
+		<key>UIAppFonts</key>
+		<array>
+			<string>Poppins-Black.ttf</string>
+			<string>Poppins-BlackItalic.ttf</string>
+			<string>Poppins-Bold.ttf</string>
+			<string>Poppins-BoldItalic.ttf</string>
+			<string>Poppins-ExtraBold.ttf</string>
+			<string>Poppins-ExtraBoldItalic.ttf</string>
+			<string>Poppins-ExtraLight.ttf</string>
+			<string>Poppins-ExtraLightItalic.ttf</string>
+			<string>Poppins-Italic.ttf</string>
+			<string>Poppins-Light.ttf</string>
+			<string>Poppins-LightItalic.ttf</string>
+			<string>Poppins-Medium.ttf</string>
+			<string>Poppins-MediumItalic.ttf</string>
+			<string>Poppins-Regular.ttf</string>
+			<string>Poppins-SemiBold.ttf</string>
+			<string>Poppins-SemiBoldItalic.ttf</string>
+			<string>Poppins-Thin.ttf</string>
+			<string>Poppins-ThinItalic.ttf</string>
+		</array>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<!-- For Google Login-->
+					<!-- <string>IOS_REVERSED_CLIENT_ID </string> -->
+
+					<!-- For FaceBook Login-->
+					<!-- <string>fbAPP-ID</string> -->
+				</array>
+			</dict>
+		</array>
+
+		<!--  Required for Facebook Login-->
+		<!-- <key>FacebookAppID</key>
+		<string>APP_ID</string>
+		<key>FacebookClientToken</key>
+		<string>CLIENT_TOKEN</string>
+		<key>FacebookDisplayName</key>
+		<string>APP_NAME</string> -->
+
+		<!--Services
+		provided by an app that require it to run in the background. Uncomment the sections you need to run
+		in the background.-->
+		<key>UIBackgroundModes</key>
+		<array>
+			<!--The
+			app plays audible content (Audio, AirPlay, and Picture in Picture) in the background.-->
+			<!-- <string>audio</string> -->
+
+			<!--The
+			app provides location-based information and requires the use of the platform’s standard
+			location service. -->
+			<!-- <string>location</string> -->
+
+			<!-- The app provides Voice over IP services. -->
+			<!-- <string>voip</string> -->
+
+			<!-- The app communicates with an accessory that delivers data at regular intervals. -->
+			<!-- <string>external-accessory</string> -->
+
+			<!-- The app communicates with a Bluetooth accessory while in the background.-->
+			<!-- <string>bluetooth-central</string> -->
+
+			<!-- The app uses peripheral mode to communicate with a Bluetooth accessory.-->
+			<!-- <string>bluetooth-peripheral</string> -->
+
+			<!-- The app requires new content from the network at regular intervals.-->
+			<!-- <string>fetch</string> -->
+
+			<!-- The app uses push notifications as a signal that new content is available to
+			download.-->
+			<!-- <string>remote-notification</string> -->
+
+			<!-- The app executes scheduled tasks while in the background.-->
+			<!-- <string>processing</string> -->
+
+			<!-- The app locates and interacts with nearby devices.-->
+			<!-- <string>nearby-interaction</string> -->
+
+			<!-- The app launches in response to a push notification and plays audible content in
+			the background-->
+			<!-- <string>push-to-talk</string> -->
+		</array>
+
+		<!-- 🚨 Keep only the permissions specified in `setup_permissions` 🚨 -->
+
+		<!-- ========================= Bluetooth ================================-->
+
+		<!-- /// Info For Bluetooh -->
+		<!-- 1).If the deployment target is earlier than iOS 13, you also need to uncomment
+		NSBluetoothPeripheralUsageDescription. -->
+		<!-- 2).For background use you need to add bluetooth-central and bluetooth-peripheral in
+		UIBackgroundModes key -->
+
+		<!-- <key>NSBluetoothAlwaysUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- <key>NSBluetoothPeripheralUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ========================= Bluetooth ================================-->
+
+
+		<!-- =========================== LocationWhenInUse =============================-->
+
+		<!-- <key>NSLocationWhenInUseUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- =========================== LocationWhenInUse =============================-->
+
+
+		<!--  ========================== Microphone ===================================-->
+
+		<!-- <key>NSMicrophoneUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!--  ========================== Microphone ===================================-->
+
+		<!-- ============================ Contacts =====================================-->
+
+		<!-- <key>NSContactsUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ============================ Contacts =====================================-->
+
+		<!-- ============================ Camera =======================================-->
+
+		<!-- <key>NSCameraUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ============================ Camera =======================================-->
+
+		<!-- ============================ Remainders =======================================-->
+
+		<!-- <key>NSRemindersFullAccessUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ============================ Remainders =======================================-->
+
+		<!-- ============================ Calendars =========================================-->
+
+		<!-- <key>NSCalendarsFullAccessUsageDescription</key>
+		<string>[REASON]</string>
+		<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ============================ Calendars =========================================-->
+
+		<!-- ========================== Media ===============================================-->
+
+		<!-- <key>NSPhotoLibraryUsageDescription</key>
+		<string>[REASON]</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ========================== Media ===============================================-->
+
+		<!-- ========================== Motion ===============================================-->
+
+		<!-- <key>NSMotionUsageDescription</key>
+		<string>[REASON]</string> -->
+
+		<!-- ========================== Motion ===============================================-->
+
+
+		<key>NSAppleMusicUsageDescription</key>
+		<string>[REASON]</string>
+
+
+		<key>NSFaceIDUsageDescription</key>
+		<string>[REASON]</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>[REASON]</string>
+		<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+		<dict>
+			<key>YOUR-PURPOSE-KEY</key>
+			<string>[REASON]</string>
+		</dict>
+
+
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>[REASON]</string>
+		<key>NSSiriUsageDescription</key>
+		<string>[REASON]</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>[REASON]</string>
+
+
+	</dict>
+</plist>

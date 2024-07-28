@@ -1,0 +1,222 @@
+const getGoogleLoginPackage = () => {
+  try {
+    return require('@react-native-google-signin/google-signin');
+  } catch (err) {
+    return undefined;
+  }
+};
+const google = getGoogleLoginPackage();
+
+/**
+ * Original Google sign in User Type
+ * */
+type User = {
+  user: {
+    id: string;
+    name: string | null;
+    email: string;
+    photo: string | null;
+    familyName: string | null;
+    givenName: string | null;
+  };
+  scopes: string[];
+  /**
+   * JWT (JSON Web Token) that serves as a secure credential for your user's identity.
+   */
+  idToken: string | null;
+  /**
+   * Not null only if a valid webClientId and offlineAccess: true was
+   * specified in configure().
+   */
+  serverAuthCode: string | null;
+};
+
+export const GoogleSignInError = {
+  SIGN_IN_CANCELLED: 'SIGN_IN_CANCELLED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PLAY_SERVICES_NOT_AVAILABLE: 'PLAY_SERVICES_NOT_AVAILABLE',
+  SIGN_IN_REQUIRED: 'SIGN_IN_REQUIRED',
+  OTHER: 'OTHER',
+} as const;
+
+type GoogleSignInErrorValue =
+  (typeof GoogleSignInError)[keyof typeof GoogleSignInError];
+
+export type GoogleLoginUser = User;
+export type GoogleLoginError = {
+  errorCode: GoogleSignInErrorValue;
+  title: string;
+  message: string;
+  nativeError: any;
+};
+
+const googleSignInErrorTitleAndMessage = {
+  [GoogleSignInError.SIGN_IN_CANCELLED]: {
+    title: 'Google Sign-In Cancelled',
+    message: 'You have cancelled the sign-in process.',
+  },
+  [GoogleSignInError.IN_PROGRESS]: {
+    title: 'Google Sign-In In Progress',
+    message:
+      'The sign-in process with your Google account is currently in progress. Please wait before trying again.',
+  },
+  [GoogleSignInError.PLAY_SERVICES_NOT_AVAILABLE]: {
+    title: 'Google Sign-In Unavailable',
+    message:
+      'Google Play Services are not available. Please ensure they are installed and try again.',
+  },
+  [GoogleSignInError.SIGN_IN_REQUIRED]: {
+    title: 'Google Sign-In Required',
+    message: 'You need to sign in with your Google account to proceed.',
+  },
+  [GoogleSignInError.OTHER]: {
+    title: 'Google Sign-In/Sign-Out Failed',
+    message:
+      'An unknown error occurred during the Google sign-in/sign-out process. Please try again later.',
+  },
+};
+
+class GoogleLogin {
+  static #instance: GoogleLogin | null = null;
+  static #googleClientId = process.env.GOOGLE_APP_ID;
+  #hasGoogleClientId = false;
+  constructor() {
+    if (GoogleLogin.#instance === null) {
+      GoogleLogin.#instance = this;
+      // update the status
+      this.#hasGoogleClientId = !!(
+        GoogleLogin.#googleClientId &&
+        typeof GoogleLogin.#googleClientId === 'string' &&
+        typeof google === 'object' &&
+        google !== null
+      );
+
+      this.#configureGoogleLogin();
+    }
+    return GoogleLogin.#instance;
+  }
+
+  #configureGoogleLogin() {
+    if (this.#hasGoogleClientId) {
+      google.GoogleSignin.configure({
+        webClientId: GoogleLogin.#googleClientId,
+        offlineAccess: true,
+        scopes: [
+          'https://www.googleapis.com/auth/plus.login',
+          'https://www.googleapis.com/auth/userinfo.profile',
+          'https://www.googleapis.com/auth/userinfo.email',
+        ],
+      });
+    }
+  }
+
+  get isGoogleLoginEnabled() {
+    return this.#hasGoogleClientId;
+  }
+
+  async login(options: {
+    onError: (errOptions: GoogleLoginError) => void;
+    onSuccess: (user: GoogleLoginUser) => void;
+    throwErrorOnNoId?: boolean;
+  }) {
+    const {onError, onSuccess, throwErrorOnNoId} = options;
+    if (!this.#hasGoogleClientId) {
+      if (throwErrorOnNoId) {
+        throw new Error(
+          'GOOGLE_APP_ID needs to be string but found undefined.',
+        );
+      }
+      return;
+    }
+    try {
+      await google.GoogleSignin.hasPlayServices();
+      const hasUserLoggedIn = await google.GoogleSignin.hasPlayServices();
+      if (hasUserLoggedIn) {
+        await google.GoogleSignin.signOut();
+      }
+      const userInfo = await google.GoogleSignin.signIn();
+      onSuccess(userInfo);
+    } catch (error) {
+      if (google.isErrorWithCode(error)) {
+        switch ((error as any).code) {
+          case google.statusCodes.SIGN_IN_CANCELLED:
+            onError({
+              errorCode: GoogleSignInError.SIGN_IN_CANCELLED,
+              nativeError: error,
+              ...googleSignInErrorTitleAndMessage[
+                GoogleSignInError.SIGN_IN_CANCELLED
+              ],
+            });
+            break;
+          case google.statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            onError({
+              errorCode: GoogleSignInError.IN_PROGRESS,
+              nativeError: error,
+              ...googleSignInErrorTitleAndMessage[
+                GoogleSignInError.IN_PROGRESS
+              ],
+            });
+            break;
+          case google.statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // play services not available or outdated
+            onError({
+              errorCode: GoogleSignInError.PLAY_SERVICES_NOT_AVAILABLE,
+              nativeError: error,
+              ...googleSignInErrorTitleAndMessage[
+                GoogleSignInError.PLAY_SERVICES_NOT_AVAILABLE
+              ],
+            });
+            break;
+          default:
+            // some other error happened
+            onError({
+              errorCode: GoogleSignInError.OTHER,
+              nativeError: error,
+              ...googleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+            });
+        }
+      } else {
+        onError({
+          errorCode: GoogleSignInError.OTHER,
+          nativeError: error,
+          ...googleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+        });
+      }
+    }
+  }
+
+  async logout(options?: {
+    onError?: (errOptions: GoogleLoginError) => void;
+    onSuccess?: (isLogout: boolean) => void;
+    throwErrorOnNoId?: boolean;
+  }) {
+    const {onError, onSuccess, throwErrorOnNoId} = options || {};
+    if (!this.#hasGoogleClientId) {
+      if (throwErrorOnNoId) {
+        throw new Error(
+          'GOOGLE_APP_ID needs to be string but found undefined.',
+        );
+      }
+      return;
+    }
+    try {
+      await google.GoogleSignin.signOut();
+      if (typeof onSuccess === 'function') {
+        onSuccess(true);
+      }
+    } catch (error) {
+      if (typeof onError === 'function') {
+        onError({
+          errorCode: GoogleSignInError.OTHER,
+          nativeError: error,
+          ...googleSignInErrorTitleAndMessage[GoogleSignInError.OTHER],
+        });
+      }
+    }
+  }
+}
+
+const googleLoginObject = new GoogleLogin();
+Object.freeze(googleLoginObject);
+export const googleLogin = googleLoginObject;

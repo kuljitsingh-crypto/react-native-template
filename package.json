@@ -1,0 +1,19 @@
+{
+  "name": "reactnativetemplate",
+  "version": "1.0.0",
+  "description": "This is react native template with some built in fetaure like React Navigation,Storage,Social Sign (Google and Facebook),.etc.",
+  "main": "template.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuljitsingh-crypto/react-native-template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuljitsingh-crypto/react-native-template/issues"
+  },
+  "homepage": "https://github.com/kuljitsingh-crypto/react-native-template#readme"
+}

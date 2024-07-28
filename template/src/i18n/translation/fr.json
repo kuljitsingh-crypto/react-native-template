@@ -1,0 +1,6 @@
+{"Home.greeting":"Salut,{{name}}!",
+"Home.goToProfile":"Aller au profil",
+"Splash.title":"Éclaboussure",
+"AuthenticatedChildren.loginText":"Se connecter",
+"AuthenticatedChildren.title":"Utilisateur authentifié requis",
+"AuthenticatedChildren.desc":"Vous pouvez utiliser cette fonctionnalité une fois connecté."}

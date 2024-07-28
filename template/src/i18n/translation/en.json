@@ -1,0 +1,11 @@
+{"Home.greeting":"Hello,{{name}}!",
+"Home.goToProfile":"Go to Profile",
+"Home.cameraPermissions":"Request Camera Permission",
+"Home.locationPermissions":"Request Location Permission",
+"Splash.title":"Splash",
+"AuthenticatedChildren.loginText":"Log In",
+"AuthenticatedChildren.title":"Authenticated User Require",
+"AuthenticatedChildren.desc":"You can this feature once you've logged in.",
+"InvalidGoogleLoginId":"To Enable Google Sign in . Add GOOGLE_APP_ID in your .env and install correct package.After that build your app once again.",
+"InvalidFacebookLoginId":"To Enable Facebook Sign in. Add FACEBOOK_APP_ID in your .env and install correct package.After that build your app once again."
+}
