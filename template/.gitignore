@@ -82,3 +82,6 @@ web-build/
 .env.local
 .env.development
 .env.production
+
+.bundle
+.bundle/*
