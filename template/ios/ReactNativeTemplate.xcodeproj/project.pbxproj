@@ -188,7 +188,7 @@
 			sourceTree = "<group>";
 		};
 		5B5755CEBFBD481390078B2B /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				2AEF341A2C2D492EAC560B49 /* Poppins-Black.ttf */,
 				6ADCA0850BBA4FBEB272395A /* Poppins-BlackItalic.ttf */,

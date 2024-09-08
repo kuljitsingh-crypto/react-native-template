@@ -163,6 +163,149 @@ For `production`: To get sha-1 go to your `Play Store Console` to obtain the SHA
 For more information on `Facebook Login` https://github.com/thebergamo/react-native-fbsdk-next
 
 
+# Push Notification 
+
+This module provides a comprehensive set of functions and utilities for handling push notifications in React Native applications. It supports both Android and iOS platforms and includes features for local notifications, remote notifications, and platform-specific customizations.
+
+## Table of Contents
+
+1. [Android-specific Functions](#android-specific-functions)
+2. [iOS-specific Functions](#ios-specific-functions)
+3. [Cross-platform Functions](#cross-platform-functions)
+4. [Remote Notification Functions](#remote-notification-functions)
+5. [Remote Notification Hooks](#remote-notification-hooks)
+6. [NativePushNotification Class](#nativepushnotification-class)
+
+## Android-specific Functions
+
+### `androidPermissionStatus(settings: NotificationSettings)`
+- Checks the authorization status for Android notifications.
+- Returns an object with the permission status and Android-specific settings.
+
+### `checkAndroidChannelPermission(channelId: string)`
+- Checks the permission status of a specific Android notification channel.
+- Returns the channel object if it exists, or null.
+
+### `checkAndroidChannelGroupPermission()`
+- Retrieves all Android notification channel groups.
+- Returns an array of channel groups.
+
+### `createAndroidNotificationChannel(channel: AndroidChannel)`
+- Creates a new Android notification channel.
+- Returns the channel ID.
+
+### `createAndroidNotificationChannelGroup(channelGrp: AndroidChannelGroup)`
+- Creates a new Android notification channel group.
+- Returns the channel group ID.
+
+### `deleteAndroidChannel(channelId: string)`
+- Deletes an Android notification channel.
+
+### `deleteAndroidChannelGroup(channelGrpId: string)`
+- Deletes an Android notification channel group.
+
+### `checkAndroidBackgroundRestriction(intl: IntlShape)`
+- Checks for Android background restrictions and prompts the user to adjust settings if necessary.
+
+## iOS-specific Functions
+
+### `iosPermissionStatus(settings: NotificationSettings)`
+- Checks the authorization status for iOS notifications.
+- Returns an object with the permission status and iOS-specific settings.
+
+### `updateIosNotificationBadgeCount(count: number)`
+- Updates the iOS app badge count.
+- Returns the new badge count.
+
+### `getIosNotificationBadgeCount()`
+- Retrieves the current iOS app badge count.
+
+### `deleteIosNotificationBadgeCount()`
+- Resets the iOS app badge count to zero.
+
+### `setIosNotificationCategory(categoryOptions: IOSNotificationCategory[])`
+- Sets iOS notification categories.
+
+## Cross-platform Functions
+
+### `checkPushNotificationPermission()`
+- Checks the push notification permission status for both Android and iOS.
+- Returns an object with the permission status and platform-specific settings.
+
+### `requestPushNotificationPermission()`
+- Requests push notification permissions for both Android and iOS.
+- Returns an object with the updated permission status and platform-specific settings.
+
+### `displayPushNotification(params: NotificationDisplayParams)`
+- Displays a push notification on the device.
+- Returns an object with the notification ID.
+
+### `cancelPushNotification(notificationId: string)`
+- Cancels a specific push notification.
+
+### `createTriggerNotification(params: TriggerNotificationParams)`
+- Creates a trigger notification that will be displayed at a specific time or interval.
+- Returns an object with the notification ID.
+
+### `getTriggerNotificationIds()`
+- Retrieves the IDs of all scheduled trigger notifications.
+
+### `createProgressIndicatorNotification(params: ProgressIndicatorNotificationParams)`
+- Creates a notification with a progress indicator (Android-specific, but works as a normal notification on iOS).
+- Returns functions to update and complete the progress.
+
+### `createForegroundServiceNotification(params: ForegroundServiceNotificationParams)`
+- Creates a foreground service notification (Android-specific, but works as a normal notification on iOS).
+- Returns a function to complete the service.
+
+## Remote Notification Functions
+
+### `getDeviceFCMToken()`
+- Retrieves the Firebase Cloud Messaging (FCM) token for the device.
+
+### `remoteForegroundNotificationEventHandler(messageHandler: RemoteMessageHandler)`
+- Handles foreground remote notifications.
+
+### `remoteBackgroundNotificationEventHandler(messageHandler: RemoteMessageHandler)`
+- Handles background remote notifications.
+
+## Remote Notification Hooks
+
+### `useCheckPushNotificationPermission()`
+- React hook to check push notification permissions.
+- Returns the current permission status.
+
+### `useRequestPushNotificationPermission()`
+- React hook to request push notification permissions.
+- Returns the updated permission status.
+
+## NativePushNotification Class
+
+The `NativePushNotification` class provides a centralized interface for managing push notifications. It includes the following properties and methods:
+
+### Constants
+- `AndroidPushNotificationImportance`
+- `AndroidPushNotificationBadgeIconType`
+- `AndroidPushNotificationVisibility`
+- `AndroidNotificationStyle`
+- `IOSInterruptionLevel`
+- `TimestampRepeatFrequency`
+
+### Properties
+- `badgeCount`: Methods for managing iOS badge counts
+- `category`: Methods for managing iOS notification categories
+- `channel`: Methods for managing Android notification channels
+- `channelGroup`: Methods for managing Android notification channel groups
+- `notification`: Methods for managing notifications (show, delete, trigger, etc.)
+- `eventHandler`: Methods for handling notification events
+- `backgroundRestriction`: Methods for checking Android background restrictions
+
+### Hooks
+- `useCheckPushNotificationPermission`
+- `useRequestPushNotificationPermission`
+
+This class provides a comprehensive set of tools for working with push notifications in React Native applications, supporting both Android and iOS platforms.
+
 ## Contributing
 
 Contributions are welcome! If you find any issues or want to add new features, feel free to open an issue or submit a pull request.

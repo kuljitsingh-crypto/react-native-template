@@ -41,12 +41,16 @@ const onForegroundMessageReceived = (messageHandeler: RemoteMessageHandler) => {
   if (!config.isRemotePushNotificationEnabled) {
     return () => {};
   }
-  return firebaseMessaging?.onMessage(messageHandeler);
+  const unsubscribeCb = firebaseMessaging?.onMessage(messageHandeler);
+  if (typeof unsubscribeCb === 'function') {
+    return unsubscribeCb;
+  }
+  return () => {};
 };
 
 const onBackgroundMessageReceived = (messageHandeler: RemoteMessageHandler) => {
   if (!config.isRemotePushNotificationEnabled) {
-    return () => {};
+    return;
   }
   return firebaseMessaging?.setBackgroundMessageHandler(messageHandeler);
 };
