@@ -306,6 +306,8 @@ The `NativePushNotification` class provides a centralized interface for managing
 
 This class provides a comprehensive set of tools for working with push notifications in React Native applications, supporting both Android and iOS platforms.
 
+For More information see https://notifee.app/react-native/docs/installation and https://rnfirebase.io/
+
 ## Contributing
 
 Contributions are welcome! If you find any issues or want to add new features, feel free to open an issue or submit a pull request.
