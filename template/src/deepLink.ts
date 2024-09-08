@@ -1,13 +1,8 @@
-import { useEffect } from "react";
-import { Linking } from "react-native";
-import { AppDispatchType, AppSelectorType } from "../store";
-import {
-  DeepLinkOrigin,
-  FETCH_STATUS,
-  FetchStatusValues,
-  deepLinkOriginType,
-} from "./custom-config";
-import { useConnect } from "./hooks";
+import {useEffect} from 'react';
+import {Linking} from 'react-native';
+import {AppDispatchType, AppSelectorType} from '../store';
+import {DeepLinkOrigin, FetchStatusValues, config} from './custom-config';
+import {useConnect} from './hooks';
 import {
   processDeepLink,
   selectDeepLinkStatus,
@@ -15,7 +10,7 @@ import {
   selectRedirectPathParams,
   selectShouldRedirectAfterDeepLink,
   updateDeepLinkStatus,
-} from "./globalReducers/deepLinkSlice";
+} from './globalReducers/deepLinkSlice';
 
 const mapStateToProps = (selector: AppSelectorType) => {
   return {
@@ -29,31 +24,31 @@ const mapStateToProps = (selector: AppSelectorType) => {
 const mapDispatchToProps = (dispatch: AppDispatchType) => ({
   onUpdateDeepLinkStatus: (status: FetchStatusValues) =>
     dispatch(updateDeepLinkStatus(status)),
-  onProcessDeepLink: (params: { url: string | null; origin: DeepLinkOrigin }) =>
+  onProcessDeepLink: (params: {url: string | null; origin: DeepLinkOrigin}) =>
     dispatch(processDeepLink(params)),
 });
 
 export function useDeepLink() {
-  const { onProcessDeepLink, onUpdateDeepLinkStatus } = useConnect(
+  const {onProcessDeepLink, onUpdateDeepLinkStatus} = useConnect(
     null,
-    mapDispatchToProps
+    mapDispatchToProps,
   );
 
   const onChange = (url: string | null, type: DeepLinkOrigin) => {
-    return onProcessDeepLink({ url, origin: type });
+    return onProcessDeepLink({url, origin: type});
   };
 
   useEffect(() => {
-    onUpdateDeepLinkStatus(FETCH_STATUS.loading);
-    const subscription = Linking.addEventListener("url", ({ url }) => {
-      onChange(url, deepLinkOriginType.eventListener);
+    onUpdateDeepLinkStatus(config.fetchStatus.loading);
+    const subscription = Linking.addEventListener('url', ({url}) => {
+      onChange(url, config.deepLinkOriginType.eventListener);
     });
     Linking.getInitialURL()
-      .then((url) => {
-        onChange(url, deepLinkOriginType.initiateUrl);
+      .then(url => {
+        onChange(url, config.deepLinkOriginType.initiateUrl);
       })
       .catch(() => {
-        onUpdateDeepLinkStatus(FETCH_STATUS.succeeded);
+        onUpdateDeepLinkStatus(config.fetchStatus.succeeded);
       });
     return () => subscription.remove();
   }, []);

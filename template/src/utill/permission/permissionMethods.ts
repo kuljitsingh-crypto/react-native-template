@@ -9,14 +9,11 @@ import {
 } from 'react-native-permissions';
 import {ObjectKeys} from '../../custom-config';
 import {
-  androidVersion,
   availablePermissions,
   BluetoothOptions,
   BluetoothPermissions,
   FormattedStatus,
   GranularPermissions,
-  isAndroidPlatform,
-  isIosPlatform,
   MediaPermissions,
   permissionName,
   PermissionRef,
@@ -27,21 +24,22 @@ import {
   PlatformPermissionOptions,
   ProcessFilterCb,
 } from './permissionConstant';
+import {deviceInfo} from '../deviceInfo';
 
 const getMediaPermissions = (
   granularPermissions?: GranularPermissions[],
 ): MediaPermissions[] | null => {
-  if (isIosPlatform) {
+  if (deviceInfo.isIosPlatform) {
     return permissions.ios_custom.ACCESS_MEDIA.permission;
-  } else if (isAndroidPlatform) {
-    if (androidVersion <= 32) {
+  } else if (deviceInfo.isAndroidPlatform) {
+    if (deviceInfo.androidVersion <= 32) {
       return [
         permissions.android.READ_EXTERNAL_STORAGE,
         permissions.android.WRITE_EXTERNAL_STORAGE,
       ];
     }
     const permissionArr: MediaPermissions[] =
-      androidVersion >= 34
+      deviceInfo.androidVersion >= 34
         ? [permissions.android.READ_MEDIA_VISUAL_USER_SELECTED]
         : [];
     const isValidGranularPermissions =
@@ -75,11 +73,11 @@ const getMediaPermissions = (
 const getBluetoothPermissions = (
   bluetoothOptions?: BluetoothOptions[],
 ): BluetoothPermissions[] | null => {
-  if (isIosPlatform) {
+  if (deviceInfo.isIosPlatform) {
     return permissions.ios_custom.ACCESS_BLUETOOTH.permission;
-  } else if (isAndroidPlatform) {
+  } else if (deviceInfo.isAndroidPlatform) {
     const permissionArr: BluetoothPermissions[] =
-      androidVersion > 30
+      deviceInfo.androidVersion > 30
         ? [permissions.android.BLUETOOTH_SCAN]
         : [
             permissions.android.ACCESS_FINE_LOCATION,
@@ -92,9 +90,12 @@ const getBluetoothPermissions = (
 
     if (isValidOption) {
       bluetoothOptions.forEach(option => {
-        if (option === 'communicate' && androidVersion > 30) {
+        if (option === 'communicate' && deviceInfo.androidVersion > 30) {
           permissionArr.push(permissions.android.BLUETOOTH_CONNECT);
-        } else if (option === 'public-visibility' && androidVersion > 30) {
+        } else if (
+          option === 'public-visibility' &&
+          deviceInfo.androidVersion > 30
+        ) {
           permissionArr.push(permissions.android.BLUETOOTH_ADVERTISE);
         } else if (option === 'background-communicate') {
           permissionArr.push(permissions.android.ACCESS_BACKGROUND_LOCATION);
@@ -113,55 +114,57 @@ export const getPlatformPermission = (
   const {mediaGranularPermissions, bluetoothOptions} = options || {};
   switch (permisionName) {
     case 'camera':
-      return isAndroidPlatform
+      return deviceInfo.isAndroidPlatform
         ? permissions.android.CAMERA
-        : isIosPlatform
+        : deviceInfo.isIosPlatform
         ? permissions.ios.CAMERA
         : null;
 
     case 'microphone':
-      return isAndroidPlatform
+      return deviceInfo.isAndroidPlatform
         ? permissions.android.RECORD_AUDIO
-        : isIosPlatform
+        : deviceInfo.isIosPlatform
         ? permissions.ios.MICROPHONE
         : null;
 
     case 'foreground_location':
-      return isAndroidPlatform
+      return deviceInfo.isAndroidPlatform
         ? permissions.android_custom.ACCESS_FOREGROUND_LOCATION.permission
-        : isIosPlatform
+        : deviceInfo.isIosPlatform
         ? permissions.ios.LOCATION_WHEN_IN_USE
         : null;
 
     case 'background_location':
-      return isAndroidPlatform
+      return deviceInfo.isAndroidPlatform
         ? permissions.android.ACCESS_BACKGROUND_LOCATION
-        : isIosPlatform
+        : deviceInfo.isIosPlatform
         ? permissions.ios.LOCATION_WHEN_IN_USE
         : null;
 
     case 'calender':
-      return isAndroidPlatform
+      return deviceInfo.isAndroidPlatform
         ? permissions.android_custom.ACCESS_CALENDAR.permission
-        : isIosPlatform
+        : deviceInfo.isIosPlatform
         ? permissions.ios_custom.ACCESS_CALENDAR.permission
         : null;
 
     case 'remainders':
-      return isIosPlatform ? permissions.ios.REMINDERS : null;
+      return deviceInfo.isIosPlatform ? permissions.ios.REMINDERS : null;
 
     case 'cellular':
-      return isAndroidPlatform ? permissions.android.READ_PHONE_STATE : null;
+      return deviceInfo.isAndroidPlatform
+        ? permissions.android.READ_PHONE_STATE
+        : null;
 
     case 'contact':
-      return isAndroidPlatform
+      return deviceInfo.isAndroidPlatform
         ? permissions.android_custom.ACCESS_CONTACT.permission
-        : isIosPlatform
+        : deviceInfo.isIosPlatform
         ? permissions.ios.CONTACTS
         : null;
 
     case 'motion':
-      return isIosPlatform ? permissions.ios.MOTION : null;
+      return deviceInfo.isIosPlatform ? permissions.ios.MOTION : null;
     case 'media':
       return getMediaPermissions(mediaGranularPermissions);
     case 'bluetooth':

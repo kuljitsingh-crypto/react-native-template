@@ -1,8 +1,8 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { AuthenticatedChildren } from "../components";
-import { FETCH_STATUS } from "../custom-config";
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useEffect} from 'react';
+import {useSelector} from 'react-redux';
+import {AuthenticatedChildren} from '../components';
+import {config} from '../custom-config';
 import {
   ScreenConfiguration,
   ScreenParamList,
@@ -10,19 +10,19 @@ import {
   ScreenValue,
   screenNames,
   screenValuesSet,
-} from "./screenNames";
-import { AppDispatchType } from "../../store";
-import { updateShouldRedirectAfterDeepLinkStatus } from "../globalReducers/deepLinkSlice";
+} from './screenNames';
+import {AppDispatchType} from '../../store';
+import {updateShouldRedirectAfterDeepLinkStatus} from '../globalReducers/deepLinkSlice';
 import {
   ScreenLoadDataKey,
   screenDataLoadingApi,
-} from "./screenApi/dataLoadingApi";
-import { ResetReduxStatekey, resetReduxState } from "./screenApi/dataResetApi";
+} from './screenApi/dataLoadingApi';
+import {ResetReduxStatekey, resetReduxState} from './screenApi/dataResetApi';
 import {
   ConditionalRedirectKey,
   conditionalRedirectApi,
-} from "./screenApi/conditionalRedirectApi";
-import { useDeepLinkStatus } from "../deepLink";
+} from './screenApi/conditionalRedirectApi';
+import {useDeepLinkStatus} from '../deepLink';
 
 const DEFAULT_REDIRECT_PATH = screenNames.home;
 const DEFAULT_SPLASH_TIMEOUT = 3000;
@@ -35,7 +35,7 @@ const useRedirect = <TName extends ScreenValue>(
   screen: ScreenConfiguration<TName> & {
     navigationProps: ScreenProps<TName>;
     dispatch: AppDispatchType;
-  }
+  },
 ) => {
   const {
     isSplashScreen,
@@ -44,7 +44,7 @@ const useRedirect = <TName extends ScreenValue>(
     dispatch,
     name,
   } = screen;
-  const { params, name: path = DEFAULT_REDIRECT_PATH } =
+  const {params, name: path = DEFAULT_REDIRECT_PATH} =
     splashRedirectOption || {};
   const {
     deepLinkStatus,
@@ -54,11 +54,11 @@ const useRedirect = <TName extends ScreenValue>(
   } = useDeepLinkStatus();
   const {
     navigation,
-    route: { params: pathParams },
+    route: {params: pathParams},
   } = navigationProps;
   const routeName = name as ScreenLoadDataKey;
   const loadData = (screenDataLoadingApi || {})[routeName];
-  const shouldLoadData = typeof loadData === "function";
+  const shouldLoadData = typeof loadData === 'function';
 
   const redirectCb = () => {
     dispatch(updateShouldRedirectAfterDeepLinkStatus(false));
@@ -76,7 +76,7 @@ const useRedirect = <TName extends ScreenValue>(
   };
 
   useEffect(() => {
-    if (deepLinkStatus === FETCH_STATUS.succeeded) {
+    if (deepLinkStatus === config.fetchStatus.succeeded) {
       if (shouldLoadData) {
         dispatch(loadData(pathParams))
           .then(() => redirectCb())
@@ -100,12 +100,12 @@ const useRedirect = <TName extends ScreenValue>(
 
 const useResetReduxState = <TName extends ScreenValue>(
   screen: ScreenConfiguration<TName>,
-  dispatch: AppDispatchType
+  dispatch: AppDispatchType,
 ) => {
-  const { name } = screen;
+  const {name} = screen;
   const routeName = name as ResetReduxStatekey;
   const resetState = (resetReduxState || {})[routeName];
-  const shouldCallReset = typeof resetState === "function";
+  const shouldCallReset = typeof resetState === 'function';
   useEffect(() => {
     return () => {
       if (shouldCallReset) {
@@ -117,16 +117,16 @@ const useResetReduxState = <TName extends ScreenValue>(
 
 const useConditionalRedirect = <TName extends ScreenValue>(
   screen: ScreenConfiguration<TName>,
-  navigation: ScreenProps<TName>["navigation"]
+  navigation: ScreenProps<TName>['navigation'],
 ) => {
   const selector = useSelector;
-  const { name } = screen;
+  const {name} = screen;
   const routeName = name as ConditionalRedirectKey;
   const conditionalRedirect = (conditionalRedirectApi || {})[routeName];
-  const shouldCallRedirect = typeof conditionalRedirect === "function";
-  const { redirectCondition, redirectOptions } = shouldCallRedirect
+  const shouldCallRedirect = typeof conditionalRedirect === 'function';
+  const {redirectCondition, redirectOptions} = shouldCallRedirect
     ? conditionalRedirect(selector, name)
-    : { redirectCondition: false, redirectOptions: null };
+    : {redirectCondition: false, redirectOptions: null};
 
   useEffect(() => {
     if (
@@ -137,12 +137,12 @@ const useConditionalRedirect = <TName extends ScreenValue>(
       if (redirectOptions.isReplace) {
         navigation.replace(
           redirectOptions.pathName,
-          redirectOptions.pathParams as any
+          redirectOptions.pathParams as any,
         );
       } else {
         navigation.navigate(
           redirectOptions.pathName,
-          redirectOptions.pathParams as any
+          redirectOptions.pathParams as any,
         );
       }
     }
@@ -152,12 +152,12 @@ const useConditionalRedirect = <TName extends ScreenValue>(
 export function screenHoc<
   TName extends ScreenValue,
   TSplashRedirect extends ScreenValue = ScreenValue,
-  TRedirect extends ScreenValue = ScreenValue
+  TRedirect extends ScreenValue = ScreenValue,
 >(
   screenConfigurations: ScreenConfiguration<TName, TSplashRedirect, TRedirect>,
-  dispatch: AppDispatchType
+  dispatch: AppDispatchType,
 ) {
-  const { name } = screenConfigurations;
+  const {name} = screenConfigurations;
   return function InnerApp(props: ScreenProps<typeof name>) {
     const {
       component: Comp,

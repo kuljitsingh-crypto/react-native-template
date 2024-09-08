@@ -1,6 +1,7 @@
 import {Platform} from 'react-native';
 import {Permission, PermissionStatus, RESULTS} from 'react-native-permissions';
 import {ObjectKeys, ObjectValues} from '../../custom-config';
+import {deviceInfo} from '../deviceInfo';
 
 const IOS = Object.freeze({
   APP_TRACKING_TRANSPARENCY: 'ios.permission.APP_TRACKING_TRANSPARENCY',
@@ -172,12 +173,6 @@ class PermissionName {
 }
 export const permissionName = new PermissionName();
 
-export const isIosPlatform = Platform.OS === 'ios' || Platform.OS === 'macos';
-export const isAndroidPlatform = Platform.OS === 'android';
-export const androidVersion = isAndroidPlatform
-  ? parseInt(Platform.Version.toString())
-  : 0;
-
 const foregroundLocationScope = {
   none: 'none',
   all: 'all',
@@ -235,7 +230,7 @@ export const availablePermissions = {
     multiToSingleConfig: {
       acceptedScopeName: readWriteScope.all,
       rejectedScopeName: readWriteScope.none,
-      permissionGrpName: isIosPlatform
+      permissionGrpName: deviceInfo.isIosPlatform
         ? permissions.ios_custom.ACCESS_CALENDAR.name
         : permissions.android_custom.ACCESS_CALENDAR.name,
       scopeOptionsFrOneSucsCond: {
@@ -262,7 +257,7 @@ export const availablePermissions = {
     multiToSingleConfig: {
       acceptedScopeName: mediaScope.all,
       rejectedScopeName: mediaScope.none,
-      permissionGrpName: isIosPlatform
+      permissionGrpName: deviceInfo.isIosPlatform
         ? permissions.ios_custom.ACCESS_MEDIA.name
         : permissions.android_custom.ACCESS_MEDIA.name,
       scopeOptionsFrOneSucsCond: {
@@ -276,7 +271,7 @@ export const availablePermissions = {
     multiToSingleConfig: {
       acceptedScopeName: bluetoothScope.all,
       rejectedScopeName: bluetoothScope.none,
-      permissionGrpName: isIosPlatform
+      permissionGrpName: deviceInfo.isIosPlatform
         ? permissions.ios_custom.ACCESS_BLUETOOTH.name
         : permissions.android_custom.ACCESS_BLUETOOTH.name,
       scopeOptionsFrOneSucsCond: {

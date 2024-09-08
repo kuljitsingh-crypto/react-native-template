@@ -215,10 +215,8 @@
 		<!-- ========================== Motion ===============================================-->
 
 
-		<key>NSAppleMusicUsageDescription</key>
+		<!-- <key>NSAppleMusicUsageDescription</key>
 		<string>[REASON]</string>
-
-
 		<key>NSFaceIDUsageDescription</key>
 		<string>[REASON]</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -228,14 +226,12 @@
 			<key>YOUR-PURPOSE-KEY</key>
 			<string>[REASON]</string>
 		</dict>
-
-
 		<key>NSSpeechRecognitionUsageDescription</key>
 		<string>[REASON]</string>
 		<key>NSSiriUsageDescription</key>
 		<string>[REASON]</string>
 		<key>NSUserTrackingUsageDescription</key>
-		<string>[REASON]</string>
+		<string>[REASON]</string> -->
 
 
 	</dict>

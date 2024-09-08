@@ -1,6 +1,9 @@
 #import "AppDelegate.h"
-
 #import <React/RCTBundleURLProvider.h>
+// Uncomment the following line if you use remote push notiifcation using firebase and
+// completed all the prerequisites for it.
+// for more information see https://rnfirebase.io/
+// #import <Firebase.h>
 
 // Uncomment the below lines if you want to use Facebook Login
 // import <AuthenticationServices/AuthenticationServices.h>
@@ -22,9 +25,15 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+   // Uncomment the following line if you use remote push notiifcation using firebase and
+  // completed all the prerequisites for it.
+  // for more information see https://rnfirebase.io/
+  // [FIRApp configure];
+
   //Uncomment the below line if you want to use Facebook Login
   // [[FBSDKApplicationDelegate sharedInstance] application:application
   //                      didFinishLaunchingWithOptions:launchOptions];
+
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }

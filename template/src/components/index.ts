@@ -6,4 +6,5 @@ export {default as AuthenticatedChildren} from './AuthenticatedChildren';
 export {default as FacebookSignInButton} from './FacebookSignInButton';
 export {default as GoogleSignInButton} from './GoogleSignInButton';
 export {default as NamedLink} from './NamedLink';
+export {default as PushNotificationProvider} from './PushNotificationProvider';
 export * from './SimpleToast';

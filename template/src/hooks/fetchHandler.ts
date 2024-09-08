@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { FETCH_STATUS, FetchStatusValues } from "../custom-config";
+import {useEffect} from 'react';
+import {config, FetchStatusValues} from '../custom-config';
 
 export function useSucessHandler(
   fetchStatus: FetchStatusValues,
@@ -7,7 +7,7 @@ export function useSucessHandler(
   ...funcArgs: any
 ) {
   useEffect(() => {
-    if (fetchStatus === FETCH_STATUS.succeeded) {
+    if (fetchStatus === config.fetchStatus.succeeded) {
       callback(...funcArgs);
     }
   }, [fetchStatus]);
@@ -19,7 +19,7 @@ export function useErrorHandler(
   ...funcArgs: any
 ) {
   useEffect(() => {
-    if (fetchStatus === FETCH_STATUS.failed) {
+    if (fetchStatus === config.fetchStatus.failed) {
       callback(...funcArgs);
     }
   }, [fetchStatus]);

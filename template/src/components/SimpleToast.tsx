@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { container, headerText, normalFont } from "../styles/appDefaultStyle";
-import { colors } from "../constants";
-import { InlineTextButton } from "./Button";
-import Icon from "./Icon";
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {container, headerText, normalFont} from '../styles/appDefaultStyle';
+import {colors} from '../constants';
+import {InlineTextButton} from './Button';
+import Icon from './Icon';
 
 export const ToastType = {
-  info: "info",
-  success: "success",
-  error: "error",
-  default: "default",
+  info: 'info',
+  success: 'success',
+  error: 'error',
+  default: 'default',
 } as const;
 type ToastTypeValue = (typeof ToastType)[keyof typeof ToastType];
 type ModalType = {
@@ -20,7 +20,7 @@ type ModalType = {
   showCloseButton: boolean;
 };
 type ContextType = {
-  updateModal: (arg: { title?: string; desc?: string }) => void;
+  updateModal: (arg: {title?: string; desc?: string}) => void;
   toggleModal: (isModalOpen: boolean) => void;
   initiateModal: (option: ModalType) => void;
 };
@@ -52,31 +52,31 @@ type SimpleToastProviderProps = {
 const useModal = () => {
   const [modal, setModal] = useState<ModalType>({
     type: ToastType.default,
-    title: "",
-    desc: "",
+    title: '',
+    desc: '',
     isOpen: false,
     showCloseButton: false,
   });
 
-  const updateModal = (arg: { title?: string; desc?: string }) => {
-    const { title, desc } = arg;
-    const titleMaybe = typeof title === "string" && title ? { title } : {};
-    const descMaybe = typeof desc === "string" && desc ? { desc } : {};
-    setModal((arg) => ({ ...arg, ...titleMaybe, ...descMaybe }));
+  const updateModal = (arg: {title?: string; desc?: string}) => {
+    const {title, desc} = arg;
+    const titleMaybe = typeof title === 'string' && title ? {title} : {};
+    const descMaybe = typeof desc === 'string' && desc ? {desc} : {};
+    setModal(arg => ({...arg, ...titleMaybe, ...descMaybe}));
   };
 
   const toggleModal = (isModalOpen: boolean) => {
-    setModal((arg) => ({ ...arg, isOpen: isModalOpen }));
+    setModal(arg => ({...arg, isOpen: isModalOpen}));
   };
 
   const initiateModal = (option: ModalType) => {
-    const { title, desc, isOpen, showCloseButton, type } = option;
-    const titleMaybe = typeof title === "string" && title ? { title } : {};
-    const descMaybe = typeof desc === "string" && desc ? { desc } : {};
+    const {title, desc, isOpen, showCloseButton, type} = option;
+    const titleMaybe = typeof title === 'string' && title ? {title} : {};
+    const descMaybe = typeof desc === 'string' && desc ? {desc} : {};
     const typeMaybe = ToastType.hasOwnProperty(type)
-      ? { type }
-      : { type: ToastType.default };
-    setModal((arg) => ({
+      ? {type}
+      : {type: ToastType.default};
+    setModal(arg => ({
       ...arg,
       ...titleMaybe,
       ...descMaybe,
@@ -86,7 +86,7 @@ const useModal = () => {
     }));
   };
 
-  return { modal, updateModal, toggleModal, initiateModal };
+  return {modal, updateModal, toggleModal, initiateModal};
 };
 const SimpleToastContext = React.createContext({} as ContextType);
 const useSimpleToastContext = () => {
@@ -105,7 +105,7 @@ const InlineSimpleToast = (props: InlineSimpleToastProps) => {
     successColor,
     errorColor,
   } = props;
-  const { toggleModal } = useSimpleToastContext();
+  const {toggleModal} = useSimpleToastContext();
 
   const handleClose = () => {
     toggleModal(false);
@@ -120,7 +120,7 @@ const InlineSimpleToast = (props: InlineSimpleToastProps) => {
       ? errorColor
       : colors.black) || colors.black;
 
-  const textColor = { color: typeColor };
+  const textColor = {color: typeColor};
 
   return isOpen ? (
     <View style={styles.modalContainer}>
@@ -134,7 +134,7 @@ const InlineSimpleToast = (props: InlineSimpleToastProps) => {
       </View>
       {showCloseButton ? (
         <InlineTextButton onPress={handleClose}>
-          <Icon name='close' iconType='ant' />
+          <Icon name="close" iconType="ant" />
         </InlineTextButton>
       ) : null}
     </View>
@@ -142,11 +142,11 @@ const InlineSimpleToast = (props: InlineSimpleToastProps) => {
 };
 
 export const SimpleToastProvider = (props: SimpleToastProviderProps) => {
-  const { children, infoColor, successColor, errorColor } = props;
-  const { modal, toggleModal, initiateModal, updateModal } = useModal();
+  const {children, infoColor, successColor, errorColor} = props;
+  const {modal, toggleModal, initiateModal, updateModal} = useModal();
   return (
     <SimpleToastContext.Provider
-      value={{ updateModal, initiateModal, toggleModal }}>
+      value={{updateModal, initiateModal, toggleModal}}>
       <View style={styles.root}>
         <InlineSimpleToast
           title={modal.title}
@@ -173,7 +173,7 @@ export const SimpleToast = (props: SimpleToastProps) => {
     type = ToastType.default,
     autoHideTimeout = 5000,
   } = props;
-  const { initiateModal, toggleModal } = useSimpleToastContext();
+  const {initiateModal, toggleModal} = useSimpleToastContext();
 
   const handleClose = () => {
     if (showCloseButton) return;
@@ -192,24 +192,26 @@ export const SimpleToast = (props: SimpleToastProps) => {
         showCloseButton: !!showCloseButton,
       });
       handleClose();
+    } else {
+      toggleModal(false);
     }
   }, [isOpen]);
 
   return null;
 };
 
-export const useToast = (options?: { autoHideTimeout?: number }) => {
-  const { autoHideTimeout = 5000 } = options || {};
-  const { initiateModal, toggleModal } = useSimpleToastContext();
+export const useToast = (options?: {autoHideTimeout?: number}) => {
+  const {autoHideTimeout = 5000} = options || {};
+  const {initiateModal, toggleModal} = useSimpleToastContext();
   const hide = () => {
     toggleModal(false);
   };
   const show = (
-    option: Omit<ModalType, "showCloseButton" | "isOpen" | "type"> & {
+    option: Omit<ModalType, 'showCloseButton' | 'isOpen' | 'type'> & {
       type?: ToastTypeValue;
-    }
+    },
   ) => {
-    const { title, desc, type } = option;
+    const {title, desc, type} = option;
     initiateModal({
       title,
       desc,
@@ -220,39 +222,43 @@ export const useToast = (options?: { autoHideTimeout?: number }) => {
     setTimeout(hide, autoHideTimeout);
   };
 
-  return { show, hide };
+  return {show, hide};
 };
 
 const styles = StyleSheet.create({
   root: {
     ...container,
     padding: 0,
-    position: "relative",
+    position: 'relative',
   },
 
   modalContainer: {
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: colors.white,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 16,
-    width: "90%",
+    width: '90%',
     zIndex: 2,
     top: 36,
     right: 5,
     borderRadius: 6,
     elevation: 16,
     shadowColor: colors.black,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
   },
   modelContent: {
     flexGrow: 1,
   },
   modalTitle: {
     ...headerText,
-    textTransform: "capitalize",
+    fontSize: 18,
+    lineHeight: 32,
+    textTransform: 'capitalize',
   },
   modalDesc: {
     ...normalFont,
+    fontSize: 14,
+    lineHeight: 20,
     color: colors.black,
   },
 });

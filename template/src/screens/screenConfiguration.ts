@@ -1,8 +1,8 @@
-import Home from "./Home/Home";
-import Splash from "./Splash/Splash";
-import Profile from "./Profile/Profile";
-import Login from "./Login/Login";
-import { ScreenConfiguration, screenNames } from "./screenNames";
+import Home from './Home/Home';
+import Splash from './Splash/Splash';
+import Profile from './Profile/Profile';
+import Login from './Login/Login';
+import {ScreenConfiguration, screenNames} from './screenNames';
 
 type ScreenConfigurations = {
   [K in keyof typeof screenNames]: ScreenConfiguration<(typeof screenNames)[K]>;
@@ -14,6 +14,7 @@ export const screenConfigurations = (): ScreenConfigurations[] => {
       name: screenNames.splash,
       component: Splash,
       isSplashScreen: true,
+      options: {headerShown: false},
     },
     {
       name: screenNames.home,

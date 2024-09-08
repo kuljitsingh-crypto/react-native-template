@@ -2,7 +2,7 @@ import React from 'react';
 import AppNavigator from './AppNavigator';
 import {createStore} from './store';
 import {Provider} from 'react-redux';
-import {SimpleToastProvider} from './src/components';
+import {PushNotificationProvider, SimpleToastProvider} from './src/components';
 import {useDeepLink} from './src/deepLink';
 import {SafeAreaView} from 'react-native';
 import {colors} from './src/constants';
@@ -23,12 +23,14 @@ const App = () => {
   return (
     <Provider store={store}>
       <DeepLinkWrapper>
-        <SimpleToastProvider
-          infoColor={colors.infoToast}
-          successColor={colors.successToast}
-          errorColor={colors.errorToast}>
-          <AppNavigator dispatch={dispatch} />
-        </SimpleToastProvider>
+        <PushNotificationProvider>
+          <SimpleToastProvider
+            infoColor={colors.infoToast}
+            successColor={colors.successToast}
+            errorColor={colors.errorToast}>
+            <AppNavigator dispatch={dispatch} />
+          </SimpleToastProvider>
+        </PushNotificationProvider>
       </DeepLinkWrapper>
     </Provider>
   );

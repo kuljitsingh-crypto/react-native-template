@@ -7,5 +7,10 @@
 "AuthenticatedChildren.title":"Authenticated User Require",
 "AuthenticatedChildren.desc":"You can this feature once you've logged in.",
 "InvalidGoogleLoginId":"To Enable Google Sign in . Add GOOGLE_APP_ID in your .env and install correct package.After that build your app once again.",
-"InvalidFacebookLoginId":"To Enable Facebook Sign in. Add FACEBOOK_APP_ID in your .env and install correct package.After that build your app once again."
+"InvalidFacebookLoginId":"To Enable Facebook Sign in. Add FACEBOOK_APP_ID in your .env and install correct package.After that build your app once again.",
+"Android.RestrictedBackground.title":"Restrictions Detected",
+"Android.RestrictedBackground.openSetting":"OK, open settings",
+"Android.RestrictedBackground.cancel":"Cancel",
+"Android.RestrictedBackground.desc":"To ensure notifications are delivered correctly, please disable battery optimization for the app."
+
 }

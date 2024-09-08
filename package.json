@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/kuljitsingh-crypto/react-native-template/issues"
   },
-  "homepage": "https://github.com/kuljitsingh-crypto/react-native-template#readme"
+  "homepage": "https://github.com/kuljitsingh-crypto/react-native-template#readme",
+  "dependencies": {}
 }

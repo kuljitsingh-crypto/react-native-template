@@ -7,3 +7,5 @@ export default function useIntl() {
   };
   return {formatMessage};
 }
+
+export type IntlShape = ReturnType<typeof useIntl>;
