@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { normalFont } from "../styles/appDefaultStyle";
-import { colors } from "../constants";
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {normalFont} from '../styles/appDefaultStyle';
+import {colors} from '../constants';
 import {
   ScreenParamKey,
   ScreenParamList,
   ScreenRouteType,
   ScreenValue,
-} from "../screens/screenNames";
-import { useScreenNavigation } from "../hooks";
-import { InlineTextButton } from "./Button";
+} from '../screens/screenNames';
+import {useScreenNavigation} from '../hooks';
+import {InlineTextButton} from './Button';
 
 type RouteProps<Tname extends ScreenParamKey> = ScreenRouteType<Tname>;
 
@@ -23,7 +23,7 @@ type OtherProps = {
 type NamedLinkProps<Tname extends ScreenParamKey> = OtherProps &
   RouteProps<Tname>;
 const NamedLink = <Tname extends ScreenParamKey>(
-  props: NamedLinkProps<Tname>
+  props: NamedLinkProps<Tname>,
 ) => {
   const navigation = useScreenNavigation();
   const {
@@ -46,7 +46,7 @@ const NamedLink = <Tname extends ScreenParamKey>(
   };
 
   const buttonChild =
-    typeof children === "string" ? (
+    typeof children === 'string' ? (
       <Text style={textStyle}>{children}</Text>
     ) : (
       children
@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   textStyle: {
     ...normalFont,
     color: colors.linkText,
-    textDecorationLine: "underline",
+    borderBottomWidth: 1,
+    borderColor: colors.linkText,
   },
   linkStyle: {
     backgroundColor: colors.white,

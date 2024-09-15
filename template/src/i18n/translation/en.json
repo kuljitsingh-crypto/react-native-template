@@ -3,6 +3,7 @@
 "Home.cameraPermissions":"Request Camera Permission",
 "Home.locationPermissions":"Request Location Permission",
 "Splash.title":"Splash",
+"Login.goHome":"Go to Home",
 "AuthenticatedChildren.loginText":"Log In",
 "AuthenticatedChildren.title":"Authenticated User Require",
 "AuthenticatedChildren.desc":"You can this feature once you've logged in.",

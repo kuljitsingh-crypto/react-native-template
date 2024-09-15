@@ -1,15 +1,21 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { container } from "../../styles/appDefaultStyle";
-import { NamedLink } from "../../components";
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {container} from '../../styles/appDefaultStyle';
+import {FormatedMessage, NamedLink} from '../../components';
+import {useIntl} from '../../hooks';
 
 const Login = () => {
+  const {formatMessage} = useIntl();
   return (
     <View
-      style={{ ...container, flexDirection: "row", alignItems: "flex-start" }}>
-      <Text>Login</Text>
-      <NamedLink name='profile' params={{ username: "abe" }}>
-        Go to home
+      style={{
+        ...container,
+        paddingTop: 0,
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+      }}>
+      <NamedLink name="profile" params={{username: 'abe'}}>
+        {formatMessage('Login.goHome')}
       </NamedLink>
     </View>
   );
