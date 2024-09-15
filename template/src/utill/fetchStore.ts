@@ -233,7 +233,7 @@ const fetchWrapper = async (
   }
 };
 
-const fetchStore = {
+const nativeFetch = {
   get(url: string, options?: OptionsType) {
     return fetchWrapper(url, 'GET', options);
   },
@@ -251,4 +251,4 @@ const fetchStore = {
   },
 };
 
-export default fetchStore;
+export default nativeFetch;

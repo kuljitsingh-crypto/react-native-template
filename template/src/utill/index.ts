@@ -1,7 +1,7 @@
 export {apiBaseUrl} from './api';
 export * from '../errorHelper';
 export * from './urlHelper';
-export * from './fetchStore';
+export {default as nativeFetch} from './fetchStore';
 export * from './thunkHelper';
 export * from './permission/permissionMethods';
 export * from './permission/permissionConstant';
