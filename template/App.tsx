@@ -2,9 +2,13 @@ import React from 'react';
 import AppNavigator from './AppNavigator';
 import {createStore} from './store';
 import {Provider} from 'react-redux';
-import {PushNotificationProvider, SimpleToastProvider} from './src/components';
+import {
+  DimensionsProvider,
+  PushNotificationProvider,
+  SimpleToastProvider,
+} from './src/components';
 import {useDeepLink} from './src/deepLink';
-import {SafeAreaView} from 'react-native';
+import {View} from 'react-native';
 import {colors} from './src/constants';
 
 //for permission implmentation go to  https://github.com/zoontek/react-native-permissions
@@ -13,7 +17,7 @@ import {colors} from './src/constants';
 
 const DeepLinkWrapper = ({children}: {children: React.JSX.Element}) => {
   useDeepLink();
-  return <SafeAreaView style={{flex: 1}}>{children}</SafeAreaView>;
+  return <View style={{flex: 1}}>{children}</View>;
 };
 
 const App = () => {
@@ -21,18 +25,20 @@ const App = () => {
   const {dispatch} = store;
 
   return (
-    <Provider store={store}>
-      <DeepLinkWrapper>
-        <PushNotificationProvider>
-          <SimpleToastProvider
-            infoColor={colors.infoToast}
-            successColor={colors.successToast}
-            errorColor={colors.errorToast}>
-            <AppNavigator dispatch={dispatch} />
-          </SimpleToastProvider>
-        </PushNotificationProvider>
-      </DeepLinkWrapper>
-    </Provider>
+    <DimensionsProvider>
+      <Provider store={store}>
+        <DeepLinkWrapper>
+          <PushNotificationProvider>
+            <SimpleToastProvider
+              infoColor={colors.infoToast}
+              successColor={colors.successToast}
+              errorColor={colors.errorToast}>
+              <AppNavigator dispatch={dispatch} />
+            </SimpleToastProvider>
+          </PushNotificationProvider>
+        </DeepLinkWrapper>
+      </Provider>
+    </DimensionsProvider>
   );
 };
 

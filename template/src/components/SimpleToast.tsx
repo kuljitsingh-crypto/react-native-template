@@ -1,31 +1,39 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
-import {container, headerText, normalFont} from '../styles/appDefaultStyle';
+import {
+  Animated,
+  LayoutChangeEvent,
+  LayoutRectangle,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  container,
+  headerText,
+  normalFont,
+  toastZIndex,
+} from '../styles/appDefaultStyle';
 import {colors} from '../constants';
 import {InlineTextButton} from './Button';
 import Icon from './Icon';
+import {
+  SimpleToastContext,
+  SimpleToastModalType,
+  SimpleToastPosition,
+  SimpleToastPositionValues,
+  SimpleToastType,
+  SimpleToastTypeValues,
+  useDeviceDimensions,
+  useSimpleToastContext,
+} from '../contextApi';
 
-export const ToastType = {
-  info: 'info',
-  success: 'success',
-  error: 'error',
-  default: 'default',
-} as const;
-type ToastTypeValue = (typeof ToastType)[keyof typeof ToastType];
-type ModalType = {
-  type: ToastTypeValue;
-  title?: string;
-  desc?: string;
-  isOpen: boolean;
-  showCloseButton: boolean;
-};
-type ContextType = {
-  updateModal: (arg: {title?: string; desc?: string}) => void;
-  toggleModal: (isModalOpen: boolean) => void;
-  initiateModal: (option: ModalType) => void;
-};
+const DEFAULT_TOAST_HIDE_OUT_TIME = 5000; //5000 milliseconds
+const MODAL_WIDTH = '90%'; // remaining % is used to move the toast left or right
+const Y_OFFSET = 80; // for top or bottom, in px
+const X_OFFSET = (100 - parseInt(MODAL_WIDTH)) / 100; // for left or right, in %
+
 type InlineSimpleToastProps = {
-  type?: ToastTypeValue;
+  type?: SimpleToastTypeValues;
   isOpen?: boolean;
   title?: string;
   desc?: string;
@@ -33,14 +41,16 @@ type InlineSimpleToastProps = {
   successColor?: string;
   errorColor?: string;
   showCloseButton: boolean;
+  position?: SimpleToastPositionValues;
 };
 type SimpleToastProps = {
-  type?: ToastTypeValue;
+  type?: SimpleToastTypeValues;
   isOpen: boolean;
   title: string;
   desc: string;
   showCloseButton?: boolean;
   autoHideTimeout?: number;
+  position?: SimpleToastPositionValues;
 };
 type SimpleToastProviderProps = {
   children: React.JSX.Element;
@@ -49,49 +59,61 @@ type SimpleToastProviderProps = {
   errorColor?: string;
 };
 
+const defaultModalState = {
+  type: SimpleToastType.default,
+  title: '',
+  desc: '',
+  isOpen: false,
+  showCloseButton: false,
+  position: SimpleToastPosition.top,
+};
+
 const useModal = () => {
-  const [modal, setModal] = useState<ModalType>({
-    type: ToastType.default,
-    title: '',
-    desc: '',
-    isOpen: false,
-    showCloseButton: false,
-  });
-
-  const updateModal = (arg: {title?: string; desc?: string}) => {
-    const {title, desc} = arg;
-    const titleMaybe = typeof title === 'string' && title ? {title} : {};
-    const descMaybe = typeof desc === 'string' && desc ? {desc} : {};
-    setModal(arg => ({...arg, ...titleMaybe, ...descMaybe}));
+  const [modal, setModal] = useState<SimpleToastModalType>(defaultModalState);
+  const timeoutId = useRef<null | any>(null);
+  const clearPrevTimeoutId = () => {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+      timeoutId.current = null;
+    }
+  };
+  const autoHideModal = (timeout = DEFAULT_TOAST_HIDE_OUT_TIME) => {
+    clearPrevTimeoutId();
+    timeoutId.current = setTimeout(hideModal, timeout);
   };
 
-  const toggleModal = (isModalOpen: boolean) => {
-    setModal(arg => ({...arg, isOpen: isModalOpen}));
+  const hideModal = () => {
+    setModal(arg => ({
+      ...arg,
+      isOpen: false,
+    }));
   };
 
-  const initiateModal = (option: ModalType) => {
-    const {title, desc, isOpen, showCloseButton, type} = option;
+  const showModal = (option: SimpleToastModalType) => {
+    const {title, desc, isOpen, showCloseButton, type, position} = option;
     const titleMaybe = typeof title === 'string' && title ? {title} : {};
     const descMaybe = typeof desc === 'string' && desc ? {desc} : {};
-    const typeMaybe = ToastType.hasOwnProperty(type)
+    const typeMaybe = SimpleToastType.hasOwnProperty(type)
       ? {type}
-      : {type: ToastType.default};
+      : {type: SimpleToastType.default};
+    const positionMaybe =
+      position && SimpleToastPosition.hasOwnProperty(position)
+        ? {position}
+        : {position: SimpleToastPosition.top};
+
+    clearPrevTimeoutId();
     setModal(arg => ({
       ...arg,
       ...titleMaybe,
       ...descMaybe,
       ...typeMaybe,
+      ...positionMaybe,
       isOpen: !!isOpen,
       showCloseButton: !!showCloseButton,
     }));
   };
 
-  return {modal, updateModal, toggleModal, initiateModal};
-};
-const SimpleToastContext = React.createContext({} as ContextType);
-const useSimpleToastContext = () => {
-  const context = useContext(SimpleToastContext);
-  return context;
+  return {modal, showModal, hideModal, autoHideModal};
 };
 
 const InlineSimpleToast = (props: InlineSimpleToastProps) => {
@@ -100,65 +122,205 @@ const InlineSimpleToast = (props: InlineSimpleToastProps) => {
     title,
     desc,
     showCloseButton,
-    type = ToastType.default,
+    type = SimpleToastType.default,
     infoColor,
     successColor,
     errorColor,
+    position,
   } = props;
-  const {toggleModal} = useSimpleToastContext();
+  const {hideModal} = useSimpleToastContext();
+  const dimensions = useDeviceDimensions();
+  const [showToast, setShowToast] = useState(false);
+  const layoutDimension = useRef<LayoutRectangle | null>(null);
+  const translateXAnim = useRef(new Animated.Value(0)).current;
+  const translateYAnim = useRef(new Animated.Value(0)).current;
+  const containerRef = useRef<View | null>(null);
 
   const handleClose = () => {
-    toggleModal(false);
+    hideModal();
+  };
+
+  const onAnimationEnd = (result: Animated.EndResult) => {
+    if (!result.finished) {
+      translateXAnim.stopAnimation();
+      translateYAnim.stopAnimation();
+    }
+    if (!isOpen && result.finished) {
+      translateXAnim.setValue(0);
+      translateYAnim.setValue(0);
+      setShowToast(false);
+    }
+  };
+
+  const startAnimation = ({x, y}: {x: number; y: number}) => {
+    Animated.parallel([
+      Animated.spring(translateXAnim, {
+        toValue: x,
+        useNativeDriver: true,
+      }),
+      Animated.spring(translateYAnim, {
+        toValue: y,
+        useNativeDriver: true,
+      }),
+    ]).start(onAnimationEnd);
+  };
+
+  const getToastPos = () => {
+    const {height = 0} = layoutDimension.current || {};
+    const screenWidth = dimensions.width;
+    const screenHeight = dimensions.height;
+    const minYOffset = Math.min(Math.max(0, screenHeight - height), Y_OFFSET);
+    const xOffset = screenWidth * X_OFFSET;
+    const pos = {x: xOffset, y: Y_OFFSET};
+    switch (position) {
+      case 'bottom':
+        pos.y = Math.max(0, screenHeight - height - minYOffset);
+        break;
+      case 'side':
+        pos.x = xOffset;
+        break;
+      default:
+        pos.y = minYOffset;
+        break;
+    }
+    return pos;
+  };
+
+  const initializePos = () => {
+    const posPromise = new Promise<{x: number; y: number}>(
+      (resolve, reject) => {
+        let pos = null;
+        if (showToast) {
+          if (containerRef.current) {
+            containerRef.current.measure((x, y, width, height) => {
+              layoutDimension.current =
+                layoutDimension.current ?? ({} as LayoutRectangle);
+              layoutDimension.current.height = height;
+              layoutDimension.current.width = width;
+              layoutDimension.current.x = x;
+              layoutDimension.current.y = y;
+
+              pos = getToastPos();
+              resolve(pos);
+            });
+          } else {
+            pos = getToastPos();
+            resolve(pos);
+          }
+        } else {
+          pos = {x: dimensions.width * X_OFFSET, y: dimensions.height};
+          if (position === 'side') {
+            pos.x = 0;
+            pos.y = Y_OFFSET;
+          } else if (position === 'top') {
+            pos.y = 0;
+          }
+          resolve(pos);
+        }
+      },
+    );
+
+    return posPromise.then(pos => {
+      translateYAnim.setValue(pos.y);
+      translateXAnim.setValue(pos.x);
+      return pos;
+    });
+  };
+
+  const showToastCb = () => {
+    const pos = getToastPos();
+    setShowToast(true);
+    startAnimation(pos);
+  };
+
+  const hideToast = () => {
+    const pos = {x: dimensions.width * X_OFFSET, y: dimensions.height};
+    const {width = 0, height = 0} = layoutDimension.current || {};
+    if (position === 'side') {
+      pos.x = -width;
+      pos.y = Y_OFFSET;
+    } else if (position === 'top') {
+      pos.y = -(height + Y_OFFSET);
+    }
+    startAnimation(pos);
+  };
+
+  const onContainerDimessionChange = (e: LayoutChangeEvent) => {
+    layoutDimension.current = e.nativeEvent.layout;
+    if (isOpen && !showToast) {
+      initializePos().then(showToastCb);
+    }
   };
 
   const typeColor =
-    (type === ToastType.info
+    (type === SimpleToastType.info
       ? infoColor
-      : type === ToastType.success
+      : type === SimpleToastType.success
       ? successColor
-      : type === ToastType.error
+      : type === SimpleToastType.error
       ? errorColor
       : colors.black) || colors.black;
 
   const textColor = {color: typeColor};
+  const containerStyle = [
+    styles.modalContainer,
+    ...(showToast ? [styles.openModalContainer] : []),
+    {transform: [{translateX: translateXAnim}, {translateY: translateYAnim}]},
+  ];
 
-  return isOpen ? (
-    <View style={styles.modalContainer}>
-      <View style={styles.modelContent}>
-        {title ? (
-          <Text style={[styles.modalTitle, textColor]}>{title}</Text>
-        ) : null}
-        {desc ? (
-          <Text style={[styles.modalDesc, textColor]}>{desc}</Text>
-        ) : null}
-      </View>
-      {showCloseButton ? (
-        <InlineTextButton onPress={handleClose}>
-          <Icon name="close" iconType="ant" />
-        </InlineTextButton>
+  useEffect(() => {
+    if (isOpen) {
+      initializePos();
+    } else {
+      hideToast();
+    }
+  }, [isOpen, position]);
+
+  return (
+    <Animated.View
+      style={containerStyle}
+      onLayout={onContainerDimessionChange}
+      ref={containerRef}>
+      {isOpen || showToast ? (
+        <React.Fragment>
+          <View style={styles.modelContent}>
+            {title ? (
+              <Text style={[styles.modalTitle, textColor]}>{title}</Text>
+            ) : null}
+            {desc ? (
+              <Text style={[styles.modalDesc, textColor]}>{desc}</Text>
+            ) : null}
+          </View>
+          {showCloseButton ? (
+            <InlineTextButton onPress={handleClose}>
+              <Icon name="close" iconType="ant" />
+            </InlineTextButton>
+          ) : null}
+        </React.Fragment>
       ) : null}
-    </View>
-  ) : null;
+    </Animated.View>
+  );
 };
 
 export const SimpleToastProvider = (props: SimpleToastProviderProps) => {
   const {children, infoColor, successColor, errorColor} = props;
-  const {modal, toggleModal, initiateModal, updateModal} = useModal();
+  const {modal, showModal, hideModal, autoHideModal} = useModal();
+
   return (
-    <SimpleToastContext.Provider
-      value={{updateModal, initiateModal, toggleModal}}>
+    <SimpleToastContext.Provider value={{showModal, hideModal, autoHideModal}}>
       <View style={styles.root}>
+        {children}
         <InlineSimpleToast
           title={modal.title}
           desc={modal.desc}
           isOpen={modal.isOpen}
           type={modal.type}
+          position={modal.position}
           showCloseButton={modal.showCloseButton}
           infoColor={infoColor}
           successColor={successColor}
           errorColor={errorColor}
         />
-        {children}
       </View>
     </SimpleToastContext.Provider>
   );
@@ -170,62 +332,71 @@ export const SimpleToast = (props: SimpleToastProps) => {
     title,
     desc,
     showCloseButton,
-    type = ToastType.default,
-    autoHideTimeout = 5000,
+    type = SimpleToastType.default,
+    autoHideTimeout = DEFAULT_TOAST_HIDE_OUT_TIME,
+    position,
   } = props;
-  const {initiateModal, toggleModal} = useSimpleToastContext();
+  const {showModal, hideModal, autoHideModal} = useSimpleToastContext();
 
   const handleClose = () => {
     if (showCloseButton) return;
-    setTimeout(() => {
-      toggleModal(false);
-    }, autoHideTimeout);
+    autoHideModal(autoHideTimeout);
   };
 
   useEffect(() => {
     if (isOpen) {
-      initiateModal({
+      showModal({
         title,
         desc,
         isOpen,
         type,
+        position,
         showCloseButton: !!showCloseButton,
       });
       handleClose();
     } else {
-      toggleModal(false);
+      hideModal();
     }
   }, [isOpen]);
 
   return null;
 };
 
-export const useToast = (options?: {autoHideTimeout?: number}) => {
-  const {autoHideTimeout = 5000} = options || {};
-  const {initiateModal, toggleModal} = useSimpleToastContext();
+export const useSimpleToast = (options?: {autoHideTimeout?: number}) => {
+  const {autoHideTimeout = DEFAULT_TOAST_HIDE_OUT_TIME} = options || {};
+  const {showModal, autoHideModal, hideModal} = useSimpleToastContext();
+
   const hide = () => {
-    toggleModal(false);
+    hideModal();
   };
   const show = (
-    option: Omit<ModalType, 'showCloseButton' | 'isOpen' | 'type'> & {
-      type?: ToastTypeValue;
+    option: Omit<
+      SimpleToastModalType,
+      'showCloseButton' | 'isOpen' | 'type'
+    > & {
+      type?: SimpleToastTypeValues;
     },
   ) => {
-    const {title, desc, type} = option;
-    initiateModal({
+    const {title, desc, type, position} = option;
+    showModal({
       title,
       desc,
-      type: type || ToastType.default,
+      type: type || SimpleToastType.default,
       isOpen: true,
       showCloseButton: false,
+      position,
     });
-    setTimeout(hide, autoHideTimeout);
+    autoHideModal(autoHideTimeout);
   };
 
   return {show, hide};
 };
 
 const styles = StyleSheet.create({
+  rootWrapper: {
+    ...container,
+    padding: 0,
+  },
   root: {
     ...container,
     padding: 0,
@@ -237,14 +408,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flexDirection: 'row',
     padding: 16,
-    width: '90%',
-    zIndex: 2,
-    top: 36,
-    right: 5,
+    width: MODAL_WIDTH,
+    zIndex: -1,
+    opacity: 0,
+    pointerEvents: 'none',
+    top: 0,
+    left: 0,
+    transform: [{translateX: 0}, {translateY: 0}],
     borderRadius: 6,
     elevation: 16,
     shadowColor: colors.black,
     alignItems: 'flex-start',
+  },
+  openModalContainer: {
+    zIndex: toastZIndex,
+    opacity: 1,
+    pointerEvents: 'auto',
   },
   modelContent: {
     flexGrow: 1,

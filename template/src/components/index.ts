@@ -7,4 +7,5 @@ export {default as FacebookSignInButton} from './FacebookSignInButton';
 export {default as GoogleSignInButton} from './GoogleSignInButton';
 export {default as NamedLink} from './NamedLink';
 export {default as PushNotificationProvider} from './PushNotificationProvider';
+export {default as DimensionsProvider} from './DimensionsProvider';
 export * from './SimpleToast';

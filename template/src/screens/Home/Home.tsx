@@ -1,9 +1,9 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import React from 'react';
 import {container, normalFont} from '../../styles/appDefaultStyle';
 import {FormatedMessage, PrimaryButton} from '../../components';
-import {screenNames} from '../screenNames';
 import {ScreenNavigation} from '../../hooks';
+import {screenNames} from '../screenNames';
 
 type HomeProps = ScreenNavigation<'home'>;
 const Home = (props: HomeProps) => {

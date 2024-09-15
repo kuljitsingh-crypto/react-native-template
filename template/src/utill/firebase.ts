@@ -8,8 +8,6 @@ export type RemoteMessageHandler = (
   message: RemoteMessage,
 ) => any | Promise<any>;
 
-console.log(config);
-
 const firebaseMessaging = config.isRemotePushNotificationEnabled
   ? cloudMessaging()
   : null;

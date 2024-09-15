@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { fonts, colors } from "../constants";
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {fonts, colors} from '../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
   },
 });
 
+export const rootContainer = {
+  ...styles.container,
+  padding: 0,
+};
 export const container = styles.container;
 export const headerText = styles.headerTextStyle;
 export const normalFont = styles.normalFont;
+
+// This is the max  zindex for the app
+export const toastZIndex = 9999;

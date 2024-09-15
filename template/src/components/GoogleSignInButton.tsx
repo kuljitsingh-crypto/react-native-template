@@ -9,7 +9,7 @@ import {
   GoogleSignInError,
 } from '../utill';
 import {normalFont} from '../styles/appDefaultStyle';
-import {useToast} from './SimpleToast';
+import {useSimpleToast} from './SimpleToast';
 import {FormatedMessage} from './translation';
 import {colors} from '../constants';
 
@@ -26,7 +26,7 @@ type GoogleSignInProps = {
 
 const GoogleSignInButton = (props: GoogleSignInProps) => {
   const {loginText, onError, onSuccess} = props;
-  const toast = useToast();
+  const toast = useSimpleToast();
   const [loginInProgress, setLoginInProgress] = useState(false);
   const buttonTextStyleMaybe = {style: styles.socialBtnText};
   const buttonStyleMaybe = {style: styles.socialBtn};

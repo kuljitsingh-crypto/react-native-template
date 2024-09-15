@@ -9,7 +9,7 @@ import {
 } from '../utill';
 import {normalFont} from '../styles/appDefaultStyle';
 import Icon from './Icon';
-import {useToast} from './SimpleToast';
+import {useSimpleToast} from './SimpleToast';
 import {FormatedMessage} from './translation';
 import {colors} from '../constants';
 
@@ -28,7 +28,7 @@ const defaultLoginError = {
 const FacebookSignInButton = (props: FacebookSignInProps) => {
   const {loginText, onError, onSuccess} = props;
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const toast = useToast();
+  const toast = useSimpleToast();
   const buttonTextStyleMaybe = {style: styles.socialBtnText};
   const buttonStyleMaybe = {style: styles.socialBtn};
 
