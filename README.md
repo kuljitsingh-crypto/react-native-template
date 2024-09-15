@@ -4,7 +4,7 @@
 
  ## Step 1: 
  ```bash
-  npx react-native init MyApp --template https://github.com/kuljitsingh-crypto/react-native-template
+  npx @react-native-community/cli init MyApp --template https://github.com/kuljitsingh-crypto/react-native-template
  ```
 
 ## Step 2: 
