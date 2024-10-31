@@ -1,7 +1,8 @@
 /**
  * @format
  */
-// import "react-native-url-polyfill/auto";
+// import 'core-js/actual/url';
+// import 'core-js/actual/url-search-params';
 import './src/i18n/i18n.config';
 import {config} from './src/custom-config';
 import {AppRegistry} from 'react-native';

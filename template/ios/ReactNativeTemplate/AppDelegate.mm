@@ -1,6 +1,6 @@
 #import "AppDelegate.h"
 #import <React/RCTBundleURLProvider.h>
-// Uncomment the following line if you use remote push notiifcation using firebase and
+// Uncomment the following line if you use  firebase and
 // completed all the prerequisites for it.
 // for more information see https://rnfirebase.io/
 // #import <Firebase.h>
@@ -25,7 +25,7 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-   // Uncomment the following line if you use remote push notiifcation using firebase and
+   // Uncomment the following line if you use firebase and
   // completed all the prerequisites for it.
   // for more information see https://rnfirebase.io/
   // [FIRApp configure];
@@ -72,7 +72,17 @@
   //   return YES;
   // }
 
+  
   return NO;
 }
+
+// If your app is using Universal Links, you'll need to add the following code as well:
+// - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+//  restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+// {
+//  return [RCTLinkingManager application:application
+//                   continueUserActivity:userActivity
+//                     restorationHandler:restorationHandler];
+// }
 
 @end

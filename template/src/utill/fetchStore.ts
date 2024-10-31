@@ -158,7 +158,7 @@ const getExtraOptions = (method: methodType, options?: OptionsType) => {
     method === 'GET'
       ? {}
       : body
-      ? typeof body === 'object'
+      ? typeof body === 'object' && body.constructor === Object
         ? {body: JSON.stringify(body)}
         : {body}
       : {};
@@ -207,6 +207,7 @@ const fetchWrapper = async (
     await checkAndAddCookieToRequest(url, options);
     const finalUrl = mergeQueryFromUrlAndParams(url, options?.params);
     const extraOptions = getExtraOptions(method, options);
+    console.log(extraOptions, 'here');
     const resp = await fetch(finalUrl, {
       method,
       ...extraOptions,
@@ -221,8 +222,14 @@ const fetchWrapper = async (
     }
     await updateCookieStore(resp);
     const data = await getResponseData(resp);
-    return {data};
+    return {
+      data,
+      status: resp.status,
+      headers: resp.headers,
+      message: resp.statusText,
+    };
   } catch (e: any) {
+    console.log(e);
     const errObject = e as {
       status: number;
       message: string;

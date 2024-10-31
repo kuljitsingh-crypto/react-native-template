@@ -16,7 +16,7 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
-        // Uncomment the following line if you use remote push notiifcation using firebase and
+        // Uncomment the following line if you use firebase and
         // completed all the prerequisites for it.
         // for more information see https://rnfirebase.io/
         // classpath('com.google.gms:google-services:4.4.2')

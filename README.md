@@ -49,6 +49,18 @@ Here is [Expo's github Link](https://github.com/expo/expo/tree/sdk-51/packages) 
 You can add your enviroment variable by creating .env file (if not exists) and add your name-value pair.
 Access variable in your app, by `process.env.VAR_NAME`
 
+
+# Deep Link
+To handle the `deep link` in your app then you need to uncomment `deep link` part in `AndroidManifest.xml` file  for `Android` and `AppDelegate.mm` file for `IOS`. If your app targeting for `Universal Links` then for `IOS` you need to uncomment `Universal Links` part in `AppDelegate.mm` file.
+
+Finally, you need to update `processDeepLinkByPathName` function of `deepLinkSlice.ts` as per your custom implementation for the deep link.
+
+
+# Firebase
+
+To use Firebase in your App, see the link  https://rnfirebase.io/
+
+
 # Google Sign in
 
 First install this package 

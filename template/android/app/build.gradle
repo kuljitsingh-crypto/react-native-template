@@ -2,7 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-// Uncomment the following line if you use remote push notiifcation using firebase and
+// Uncomment the following line if you use firebase and
 // completed all the prerequisites for it.
 // for more information see https://rnfirebase.io/
 // apply plugin: 'com.google.gms.google-services'

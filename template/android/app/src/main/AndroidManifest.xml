@@ -5,7 +5,7 @@
   <!-- uncomment the permissions you need -->
   <!-- uncomment only uses-permission line -->
 
-  <!-- ======================= For Bluetooth ===========================================-->
+  <!-- ======================= Bluetooth ===========================================-->
 
   <!-- //// Info For bluetooth //// -->
 
@@ -115,20 +115,19 @@
 
   <!-- ============================ Push Notification ====================================-->
 
-  <uses-permission android:name="android.permission.VIBRATE" />
+  <!-- <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> -->
 
   <!--  Starting from Android 12 (API level 31), to schedule the notification that triggers at the
   exact time, you need to add this line.-->
-  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+  <!-- <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> -->
 
 
   <!-- ============================ Push Notification ====================================-->
 
 
   <!-- <uses-permission android:name="android.permission.ACCEPT_HANDOVER" />
-    
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="com.android.voicemail.permission.ADD_VOICEMAIL" />
@@ -176,11 +175,25 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+
+      <!-- Customize this as per your deep link requirement-->
+      <!-- <intent-filter android:label="@string/app_name">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="http"
+          android:host="www.example.com"
+          android:pathPrefix="/gizmos" />
+      </intent-filter> -->
+
     </activity>
-    <!-- Un comment this line if you app use some service (like location,microphone,camera,etc.,) during foreground service notification-->
+    <!-- Un comment this line if you app use some service (like location,microphone,camera,etc.,)
+    during foreground service notification-->
     <!-- For example, with one service type -->
-    <!-- <service android:name="app.notifee.core.ForegroundService" android:foregroundServiceType="location" /> -->
+    <!-- <service android:name="app.notifee.core.ForegroundService"
+    android:foregroundServiceType="location" /> -->
     <!-- Or, with multiple service types -->
-    <!-- <service android:name="app.notifee.core.ForegroundService" android:foregroundServiceType="location|camera|microphone" /> -->
+    <!-- <service android:name="app.notifee.core.ForegroundService"
+    android:foregroundServiceType="location|camera|microphone" /> -->
   </application>
 </manifest>

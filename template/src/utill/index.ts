@@ -12,3 +12,4 @@ export * from './deviceInfo';
 export * from './nativeAlert';
 export * from './dataHelper';
 export * from './firebase';
+export * from './payments/paypal/paypal';
