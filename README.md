@@ -55,6 +55,130 @@ To handle the `deep link` in your app then you need to uncomment `deep link` par
 
 Finally, you need to update `processDeepLinkByPathName` function of `deepLinkSlice.ts` as per your custom implementation for the deep link.
 
+# Storage
+
+There is two type of storage available in this template. 
+
+## Local Storage
+
+This Api provides a secure and convenient wrapper around `react-native-encrypted-storage` for storing and retrieving data. It supports serialization and deserialization of complex data types like `Date` objects, ensuring proper handling during storage and retrieval.
+
+
+
+### Features
+
+1. **Secure Data Storage**: Utilizes `react-native-encrypted-storage` for secure storage of sensitive data.
+2. **Custom Serialization**: Handles `Date` objects during serialization to ensure data integrity.
+3. **Type Safety**: Provides type definitions for common data types, making it easier to work with stored data.
+4. **Error Handling**: Gracefully handles errors during storage and retrieval operations.
+
+
+### API Reference
+
+#### 1. `setItem`
+
+Saves a key-value pair to the encrypted storage.
+
+**Syntax**:  
+```typescript
+static async setItem<V extends ObjectType | unknown = ObjectType>(
+  keyName: string,
+  value: V
+): Promise<boolean>;
+```
+
+- **`keyName`**: A string representing the key.
+- **`value`**: The value to store (can be an object, array, string, number, boolean, `Date`, etc.).
+- **Returns**: `true` if storage is successful, `false` otherwise.
+
+---
+
+#### 2. `getItem`
+
+Retrieves the value associated with a key from the encrypted storage.
+
+**Syntax**:  
+```typescript
+static async getItem<
+  R extends LocalStorageReturnKeys | unknown = LocalStorageReturnKeys,
+>(
+  keyName: string
+): Promise<R extends LocalStorageReturnKeys ? LocalStorageReturn[R] : R | null>;
+```
+
+- **`keyName`**: A string representing the key.
+- **Returns**: The retrieved value (if found) or `null`.
+
+---
+
+#### 3. `removeItem`
+
+Removes a key-value pair from the encrypted storage.
+
+**Syntax**:  
+```typescript
+static async removeItem(keyName: string): Promise<boolean>;
+```
+
+- **`keyName`**: A string representing the key.
+- **Returns**: `true` if removal is successful, `false` otherwise.
+
+---
+
+### Example Usage
+
+```typescript
+import { LocalStorage } from './LocalStorage';
+
+// Save an item
+await LocalStorage.setItem('user', {
+  name: 'John Doe',
+  age: 30,
+  joinedAt: new Date(),
+});
+
+// Retrieve an item
+const user = await LocalStorage.getItem('user');
+console.log(user); // Output: { name: 'John Doe', age: 30, joinedAt: DateObject }
+
+// Remove an item
+const isRemoved = await LocalStorage.removeItem('user');
+console.log(isRemoved); // Output: true
+```
+
+## Cloud Storage
+It implements a **database abstraction layer** for cloud storage, designed for flexibility and scalability. It supports CRUD operations, transactions, querying, and relational data handling through an interface (`IDatabase`) and adapters like `FirebaseDatabase`. Here's a concise breakdown:
+
+
+### **Key Components**
+1. **`IDatabase` Interface:**
+   - Defines standard methods like `create`, `find`, `update`, `delete`, and transaction support.
+
+2. **`FirebaseDatabase` Implementation:**
+   - Handles Firestore-specific logic while adhering to the `IDatabase` interface.
+
+3. **`DatabaseAdapter` Class:**
+   - Acts as a unified interface for interacting with the database, enabling easy swaps between database systems.
+
+4. **Example Integration (`Paypal`):**
+   - Demonstrates use cases like storing PayPal order details with the abstraction.
+
+
+### **Features**
+- **CRUD Operations:** Standard data management.
+- **Query Support:** Complex filtering with operators like `==` and `array-contains`.
+- **Transaction Handling:** Ensures atomic updates.
+- **Database-Agnostic Design:** Easily switch between database implementations.
+
+
+
+### **Benefits**
+- **Scalable:** Supports adding new databases.
+- **Reusable:** Encapsulated, maintainable logic.
+- **Consistent:** Uniform interaction pattern for data operations.
+
+This setup simplifies database management, starting with Firebase and extensible to other systems.
+
 
 # Firebase
 
