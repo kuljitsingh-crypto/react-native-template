@@ -4,6 +4,25 @@ const isPushNotificationEnabled = enablePushNotifications === 'true';
 const isRemotePushNotificationEnabled =
   process.env.ENABLE_REMOTE_PUSH_NOTIFICATION === 'true';
 
+///=============================== For  Paypal =====================================//
+const PAYPAL_PAYMENT_APPROVE_URL_OPENER = {
+  insideApp: 'insideApp',
+  // For "inside app" paypal approve url open in web view inside the application.
+
+  outsideApp: 'outsideApp',
+  // For "outside app" paypal approve url open in default browser using React Native Linking:https://reactnative.dev/docs/linking.
+  // For this you need to create custom return  and cancel url (which is generally universal link) and
+  // Also handle deep linking, if you use App as return  and cancel url.
+  // To handle deep linking you just need to add your logic in "processDeepLinkByPathName" function of "deepLinkSlice.ts"
+} as const;
+
+// It is used in web view when "inside-app" is used for "PAYPAL_PAYMENT_APPROVE_URL_OPENER"
+// You can use your own website url, if you have own ui for this
+const paypalPaymentApproveRedirectUrl = 'https://example.com/returnUrl';
+const paypalPaymentCancelRedirectUrl = 'https://example.com/cancelUrl';
+
+//=========================================================================================//
+
 const FETCH_STATUS = {
   idle: 'idle',
   loading: 'loading',
@@ -22,6 +41,9 @@ export const config = {
   isRemotePushNotificationEnabled,
   deepLinkOriginType,
   fetchStatus: FETCH_STATUS,
+  paypalPaymentApproveUrlOpener: PAYPAL_PAYMENT_APPROVE_URL_OPENER,
+  paypalPaymentApproveRedirectUrl,
+  paypalPaymentCancelRedirectUrl,
 };
 
 export type FetchStatusValues =
@@ -33,3 +55,4 @@ export type DeepLinkOrigin =
 
 export type ObjectValues<T extends object> = T[keyof T];
 export type ObjectKeys<T extends object> = keyof T;
+export type PaypalPaymentType = keyof typeof PAYPAL_PAYMENT_APPROVE_URL_OPENER;

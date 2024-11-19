@@ -13,3 +13,5 @@ export * from './nativeAlert';
 export * from './dataHelper';
 export * from './firebase';
 export * from './payments/paypal/paypal';
+export * from './crypto';
+export * from './cloudStroage';

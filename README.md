@@ -60,6 +60,88 @@ Finally, you need to update `processDeepLinkByPathName` function of `deepLinkSli
 
 To use Firebase in your App, see the link  https://rnfirebase.io/
 
+Here's a explanation of the methods and their functionality in the provided Firebase Class in the template:
+
+### Cloud Messaging Methods:
+1. **`registerDeviceForRemoteMessages`**:
+   Ensures the device is registered for receiving remote push notifications, if enabled in the configuration.
+
+2. **`getFCMToken`**:
+   Retrieves the Firebase Cloud Messaging (FCM) token for the device, enabling it to receive push notifications.
+
+3. **`onForegroundMessageReceived`**:
+   Sets a handler to process notifications received while the app is in the foreground.
+
+4. **`onBackgroundMessageReceived`**:
+   Sets a handler to process notifications received while the app is in the background.
+
+---
+
+### Cloud Database Methods:
+#### Data Retrieval
+5. **`findByFieldPath`**:
+   Fetches a single document by its Firestore path.
+
+6. **`getRelatedFieldData`**:
+   Retrieves a related document by its field path, if the field is a reference.
+
+7. **`getRelatedFieldsData`**:
+   Fetches and replaces related fields in a document with their respective data.
+
+8. **`findById`**:
+   Fetches a document by its collection name and ID. Supports populating related fields.
+
+9. **`findOne`**:
+   Finds a single document matching the specified query conditions.
+
+10. **`find`**:
+    Retrieves multiple documents matching the query. Supports pagination and metadata.
+
+#### Data Manipulation
+11. **`create`**:
+    Adds a new document to a collection, with an optional ID.
+
+12. **`findByIdAndUpdate`**:
+    Updates a document by its ID.
+
+13. **`findOneAndUpdate`**:
+    Updates the first document that matches the query.
+
+14. **`findByIdAndDelete`**:
+    Deletes a document by its ID.
+
+15. **`findOneAndDelete`**:
+    Deletes the first document that matches the query.
+
+16. **`countDocuments`**:
+    Counts the number of documents matching a query.
+
+17. **`updateMany`**:
+    Updates all documents matching a query using a batch operation.
+
+18. **`deleteMany`**:
+    Deletes all documents matching a query using a batch operation.
+
+19. **`insertMany`**:
+    Adds multiple documents to a collection using a batch operation.
+
+#### Transactions
+20. **`updateTransaction`**:
+    Executes an atomic update on a document within a transaction.
+
+21. **`setTransaction`**:
+    Replaces or creates a document atomically within a transaction.
+
+22. **`deleteTransaction`**:
+    Atomically deletes a document within a transaction based on a condition.
+
+#### Field Utilities
+23. **`FirestoreFieldActions`**:
+    Provides utility actions like setting server time, incrementing values, or modifying arrays in a document.
+
+24. **`FirestoreFieldTypes`**:
+    Exposes Firestore-specific types such as `GeoPoint`,`Blob`, `Timestamp`, and `DocumentReference`.
+
 
 # Google Sign in
 
@@ -324,6 +406,4 @@ For More information see https://notifee.app/react-native/docs/installation and 
 
 Contributions are welcome! If you find any issues or want to add new features, feel free to open an issue or submit a pull request.
 
-## License
 
-This project is licensed under the [MIT License](LICENSE).

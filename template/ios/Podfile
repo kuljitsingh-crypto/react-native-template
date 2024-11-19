@@ -69,6 +69,7 @@ target 'ReactNativeTemplate' do
   # Uncomment the following line if you use firebase and
   # completed all the prerequisites for it.
   # for more information see https://rnfirebase.io/
+  
   #use_frameworks! :linkage => :static
   #$RNFirebaseAsStaticFramework = true
 

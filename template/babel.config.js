@@ -1,7 +1,7 @@
 module.exports = function (api) {
   api.cache(false);
   return {
-    presets: ['module:@react-native/babel-preset'],
+    presets: ['babel-preset-expo'],
     plugins: [
       [
         'module:react-native-dotenv',

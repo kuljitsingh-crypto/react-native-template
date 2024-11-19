@@ -207,7 +207,6 @@ const fetchWrapper = async (
     await checkAndAddCookieToRequest(url, options);
     const finalUrl = mergeQueryFromUrlAndParams(url, options?.params);
     const extraOptions = getExtraOptions(method, options);
-    console.log(extraOptions, 'here');
     const resp = await fetch(finalUrl, {
       method,
       ...extraOptions,
@@ -229,7 +228,6 @@ const fetchWrapper = async (
       message: resp.statusText,
     };
   } catch (e: any) {
-    console.log(e);
     const errObject = e as {
       status: number;
       message: string;
