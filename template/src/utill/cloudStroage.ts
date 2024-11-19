@@ -613,29 +613,30 @@ class DatabaseAdapter {
 
 DatabaseAdapter.setDatabase(new FirebaseDatabase());
 
-//============================ paypal=================================
+// Create a new class for the new table as you require.
+//============================ Test Table=================================
 
-class Paypal {
-  static #instance: Paypal | null = null;
+class Test {
+  static #instance: Test | null = null;
 
   constructor() {
-    if (Paypal.#instance === null) {
-      Paypal.#instance = this;
+    if (Test.#instance === null) {
+      Test.#instance = this;
     }
-    return Paypal.#instance;
+    return Test.#instance;
   }
 
-  addPaypalOrderDetails = (params: {
+  addDetails = (params: {
     id?: string;
-    orderDetails: Record<string, any>;
+    details: Record<string, any>;
     metadata?: any;
   }) => {
     try {
-      const {id, orderDetails, metadata} = params;
+      const {id, details, metadata} = params;
       return DatabaseAdapter.create({
-        tableName: 'paypal-order',
+        tableName: 'test',
         id,
-        data: orderDetails,
+        data: details,
         metadata,
       });
     } catch (err) {
@@ -647,5 +648,5 @@ class Paypal {
 //=====================================================================
 
 export class CloudStroage {
-  static paypal = new Paypal();
+  static test = new Test();
 }
