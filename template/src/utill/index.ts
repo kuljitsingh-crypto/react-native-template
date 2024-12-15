@@ -14,3 +14,4 @@ export * from './dataHelper';
 export * from './firebase';
 export * from './crypto';
 export * from './cloudStroage';
+export * from './stylesHelper'
