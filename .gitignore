@@ -1,0 +1,10 @@
+node_modules/
+.vscode/
+.DS_Store
+.idea/
+
+
+template/**/google-services.json
+template/**/Podfile.lock
+template/**/GoogleService-Info.plist
+template/**/node_modules/
